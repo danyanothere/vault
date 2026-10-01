@@ -27,7 +27,7 @@ export default function AboutPage() {
     <>
       <section className="about-hero">
         <div className="about-hero-media">
-          <Image src="/images/about/residence-dusk.webp" alt="Private residence at dusk with luxury automobiles" fill priority sizes="100vw" style={{ objectPosition: "60% 60%" }} />
+          <Image quality={90} src="/images/about/residence-dusk.webp" alt="Private residence at dusk with luxury automobiles" fill priority sizes="100vw" style={{ objectPosition: "60% 60%" }} />
         </div>
         <div className="about-hero-copy">
           <p className="eyebrow eyebrow-after">About VAULT</p>
@@ -61,7 +61,7 @@ export default function AboutPage() {
 
       <section id="story" className="story" aria-labelledby="story-title">
         <div className="story-img">
-          <Image src="/images/about/leather-seat.webp" alt="Quilted leather seat with Trident emblem" fill sizes="(max-width: 900px) 100vw, 36vw" style={{ objectPosition: "50% 35%" }} />
+          <Image quality={90} src="/images/about/leather-seat.webp" alt="Quilted leather seat with Trident emblem" fill sizes="(max-width: 900px) 100vw, 36vw" style={{ objectPosition: "50% 35%" }} />
         </div>
         <div className="story-center">
           <p className="eyebrow eyebrow-after">Our story</p>
@@ -112,7 +112,7 @@ export default function AboutPage() {
 
       <section className="why" aria-labelledby="why-title">
         <div className="why-media">
-          <Image src="/images/about/showroom.webp" alt="Glass showroom with several luxury automobiles" fill sizes="(max-width: 900px) 100vw, 62vw" style={{ objectPosition: "30% 60%" }} />
+          <Image quality={90} src="/images/about/showroom.webp" alt="Glass showroom with several luxury automobiles" fill sizes="(max-width: 900px) 100vw, 62vw" style={{ objectPosition: "30% 60%" }} />
           <div className="why-overlay">
             <p className="eyebrow eyebrow-after">Why VAULT</p>
             <h2 id="why-title" className="title-lg">

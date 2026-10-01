@@ -28,7 +28,7 @@ export default function VehicleDetail({ id }: { id: string }) {
       <section className="detail" aria-labelledby="detail-title">
         <div className="detail-media" aria-live="polite">
           {items.map((item, i) => (
-            <Image
+            <Image quality={90}
               key={item.label}
               src={item.img.src}
               alt={i === active ? item.img.alt : ""}
@@ -104,7 +104,7 @@ export default function VehicleDetail({ id }: { id: string }) {
         {items.map((item, i) => (
           <button key={item.label} type="button" className={i === active ? "active" : undefined} aria-pressed={i === active} onClick={() => setActive(i)}>
             <span className="gallery-thumb">
-              <Image src={item.img.src} alt="" fill sizes="180px" style={{ objectPosition: item.img.position }} />
+              <Image quality={90} src={item.img.src} alt="" fill sizes="180px" style={{ objectPosition: item.img.position }} />
             </span>
             <span className="gallery-label">{item.label}</span>
           </button>
@@ -119,7 +119,7 @@ function GalleryVideo({ title, poster }: { title: string; poster: string }) {
   return (
     <div className="gallery-video">
       <span className="gallery-thumb">
-        <Image src={poster} alt="" fill sizes="180px" />
+        <Image quality={90} src={poster} alt="" fill sizes="180px" />
         <span className="gallery-play" aria-hidden="true">
           <Play size={14} strokeWidth={1.4} />
         </span>

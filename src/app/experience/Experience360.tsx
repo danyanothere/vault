@@ -115,7 +115,7 @@ export default function Experience360() {
     [-2, -1, 1, 2].forEach((o) => {
       const f = frames[(((frame + o) % count) + count) % count];
       const img = new window.Image();
-      img.src = `/_next/image?url=${encodeURIComponent(f.src)}&w=1920&q=75`;
+      img.src = `/_next/image?url=${encodeURIComponent(f.src)}&w=1920&q=90`;
     });
   }, [frame, frames, count]);
 
@@ -144,7 +144,7 @@ export default function Experience360() {
           onPointerCancel={onUp}
         >
           {frames.map((f, i) => (
-            <Image
+            <Image quality={90}
               key={`${mode}-${doors}-${trunk}-${f.src}-${f.label}`}
               src={f.src}
               alt=""

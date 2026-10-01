@@ -23,7 +23,7 @@ export default function ContactCTA({
   return (
     <section className="cta" aria-labelledby="cta-title">
       <div className="cta-media" aria-hidden="true">
-        <Image src={image} alt="" fill sizes="(max-width: 800px) 100vw, 70vw" style={{ objectPosition: imagePosition }} />
+        <Image quality={90} src={image} alt="" fill sizes="(max-width: 800px) 100vw, 70vw" style={{ objectPosition: imagePosition }} />
       </div>
       <div className="container cta-grid">
         <div className="cta-copy">

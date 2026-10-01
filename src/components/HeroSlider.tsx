@@ -24,7 +24,7 @@ export default function HeroSlider() {
     >
       <div className="hero-media" aria-hidden="true">
         {vehicles.map((item, i) => (
-          <Image
+          <Image quality={90}
             key={item.id}
             src={item.hero.src}
             alt=""

@@ -13,7 +13,7 @@ export default function ContactPage() {
     <>
       <section className="request">
         <div className="request-media" aria-hidden="true">
-          <Image src="/images/services/wheel-caliper.webp" alt="" fill priority sizes="100vw" style={{ objectPosition: "70% 50%" }} />
+          <Image quality={90} src="/images/services/wheel-caliper.webp" alt="" fill priority sizes="100vw" style={{ objectPosition: "70% 50%" }} />
         </div>
         <ContactForm />
       </section>

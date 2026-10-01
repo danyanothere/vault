@@ -22,7 +22,7 @@ export default function SellPage() {
     <>
       <section className="sell">
         <div className="sell-media" aria-hidden="true">
-          <Image src="/images/auction/porsche-rear.webp" alt="" fill priority sizes="(max-width: 900px) 100vw, 55vw" style={{ objectPosition: "30% 50%" }} />
+          <Image quality={90} src="/images/auction/porsche-rear.webp" alt="" fill priority sizes="(max-width: 900px) 100vw, 55vw" style={{ objectPosition: "30% 50%" }} />
         </div>
         <div className="sell-copy">
           <p className="eyebrow eyebrow-after">Sell your car</p>

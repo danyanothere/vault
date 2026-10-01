@@ -25,7 +25,7 @@ export default function AuctionSection({ headingLevel = "h2" }: { headingLevel?:
         </div>
         <div className="auction-card">
           <div className="auction-card-img" aria-hidden="true">
-            <Image src="/images/auction/porsche-rear.webp" alt="" fill sizes="(max-width: 900px) 100vw, 40vw" style={{ objectPosition: "40% 50%" }} />
+            <Image quality={90} src="/images/auction/porsche-rear.webp" alt="" fill sizes="(max-width: 900px) 100vw, 40vw" style={{ objectPosition: "40% 50%" }} />
           </div>
           <div className="auction-card-body">
             <p className="tick-label">Next private auction</p>
