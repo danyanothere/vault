@@ -14,8 +14,9 @@ export default function CollectionPage() {
   return (
     <>
       <h1 className="sr-only">The VAULT collection</h1>
-      <VehicleShowcase vehicle={vehicles[1]} priority />
-      <VehicleShowcase vehicle={vehicles[2]} />
+      {vehicles.map((v, i) => (
+        <VehicleShowcase key={v.id} vehicle={v} priority={i === 0} />
+      ))}
       <AuctionSection />
       <TrustStrip />
       <ContactCTA />

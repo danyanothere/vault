@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { vehicles } from "@/data/vehicles";
 import Button from "./Button";
 import VehicleSelector from "./VehicleSelector";
+import WatchVideo from "./WatchVideo";
 
 export default function HeroSlider() {
   const [active, setActive] = useState(0);
@@ -55,9 +56,12 @@ export default function HeroSlider() {
             <Button href="/contact" arrow>
               Request a private viewing
             </Button>
-            <Button href="/collection" variant="ghost">
-              Explore collection
-            </Button>
+            <div className="hero-ctas-row">
+              <Button href="/collection" variant="ghost">
+                Explore collection
+              </Button>
+              <WatchVideo key={v.id} title={`${v.brand} ${v.modelLines.join(" ")}`} poster={v.video.poster} src={v.video.src} />
+            </div>
           </div>
 
           <div className="hero-vehicle" key={v.id} aria-live="polite">
