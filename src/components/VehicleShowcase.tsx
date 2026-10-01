@@ -53,7 +53,7 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
           <Button href="/contact" arrow>
             Request a private viewing
           </Button>
-          <WatchVideo title={`${vehicle.brand} ${vehicle.modelLines.join(" ")}`} poster={vehicle.showcase.src} posterPosition={vehicle.showcase.position} />
+          <WatchVideo title={`${vehicle.brand} ${vehicle.modelLines.join(" ")}`} poster={vehicle.video.poster} src={vehicle.video.src} />
         </div>
       </div>
 

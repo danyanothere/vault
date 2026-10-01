@@ -1019,3 +1019,6 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   .legal-grid { grid-template-columns: 1fr; }
   .legal-toc { position: static; }
 }
+
+.video-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+.video-close { z-index: 2; }

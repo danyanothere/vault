@@ -21,11 +21,13 @@ export type Vehicle = {
   showcase: Img;
   thumbnail: Img;
   gallery: Partial<Record<GalleryCategory, Img[]>>;
+  video: { src: string; poster: string };
 };
 
 export const vehicles: Vehicle[] = [
   {
     id: "maserati-quattroporte",
+    video: { src: "/videos/maserati.mp4", poster: "/videos/maserati-poster.webp" },
     index: "01",
     brand: "Maserati",
     modelLines: ["Quattroporte"],
@@ -56,6 +58,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "brabus-gls",
+    video: { src: "/videos/brabus.mp4", poster: "/videos/brabus-poster.webp" },
     index: "02",
     brand: "Brabus",
     modelLines: ["GLS"],
@@ -82,6 +85,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "porsche-911-turbo",
+    video: { src: "/videos/porsche.mp4", poster: "/videos/porsche-poster.webp" },
     index: "03",
     brand: "Porsche",
     modelLines: ["911 Turbo", "Cabriolet"],

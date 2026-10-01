@@ -66,7 +66,7 @@ export default function VehicleDetail({ id }: { id: string }) {
               <Link href="/experience" className="btn btn-outline btn-sm">
                 View 360°
               </Link>
-              <WatchVideo title={title} poster={v.hero.src} posterPosition={v.hero.position} />
+              <WatchVideo title={title} poster={v.video.poster} src={v.video.src} />
             </div>
           </div>
         </div>
@@ -109,13 +109,13 @@ export default function VehicleDetail({ id }: { id: string }) {
             <span className="gallery-label">{item.label}</span>
           </button>
         ))}
-        <GalleryVideo title={title} poster={v.hero.src} />
+        <GalleryVideo title={title} poster={v.video.poster} src={v.video.src} />
       </div>
     </>
   );
 }
 
-function GalleryVideo({ title, poster }: { title: string; poster: string }) {
+function GalleryVideo({ title, poster, src }: { title: string; poster: string; src: string }) {
   return (
     <div className="gallery-video">
       <span className="gallery-thumb">
@@ -124,7 +124,7 @@ function GalleryVideo({ title, poster }: { title: string; poster: string }) {
           <Play size={14} strokeWidth={1.4} />
         </span>
       </span>
-      <WatchVideo title={title} poster={poster} label="Video" className="gallery-video-btn" />
+      <WatchVideo title={title} poster={poster} src={src} label="Video" className="gallery-video-btn" />
     </div>
   );
 }

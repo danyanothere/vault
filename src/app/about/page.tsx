@@ -48,7 +48,7 @@ export default function AboutPage() {
             <Button href="#story" arrow>
               Our philosophy
             </Button>
-            <WatchVideo label="Watch our story" title="The VAULT story" poster="/images/about/residence-dusk.webp" posterPosition="60% 60%" />
+            <WatchVideo label="Watch our story" title="The VAULT story" poster="/videos/story-poster.webp" src="/videos/story.mp4" />
           </div>
         </div>
         <p className="about-hero-mark" aria-hidden="true">
