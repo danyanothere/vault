@@ -792,7 +792,7 @@ main { display: block; padding-top: var(--header-h); }
    ========================================================================== */
 
 .exp { border-bottom: 1px solid var(--line-soft); }
-.exp-stage { position: relative; height: clamp(560px, calc(100svh - var(--header-h)), 900px); background: radial-gradient(ellipse at 50% 62%, #151515 0%, var(--bg-deep) 62%); overflow: hidden; }
+.exp-stage { position: relative; /* never wider than 2:1, so photos are never cropped hard on short laptop screens */ height: clamp(560px, max(calc(100svh - var(--header-h)), 50vw), 900px); background: radial-gradient(ellipse at 50% 62%, #151515 0%, var(--bg-deep) 62%); overflow: hidden; }
 .exp-stage:fullscreen { height: 100vh; }
 .exp-stage.is-overlay { position: fixed; inset: 0; z-index: 120; height: 100vh; }
 .exp-view { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
@@ -827,7 +827,6 @@ main { display: block; padding-top: var(--header-h); }
 .exp-control:disabled { opacity: 0.4; }
 
 @media (max-width: 700px) {
-  .exp-view[data-mode="exterior"] img { object-fit: contain; }
   .exp-stage { height: clamp(620px, calc(100svh - var(--header-h)), 820px); }
   .exp-head { right: var(--gutter); }
   .exp-cube { width: 42px; height: 42px; }
@@ -1129,4 +1128,48 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
 @media (prefers-reduced-motion: reduce) {
   .rv-rise, .rv-curtain { opacity: 1 !important; transform: none !important; clip-path: none !important; }
   .rv-line::after { transform: none !important; }
+}
+
+
+/* ==========================================================================
+   Phones
+   ========================================================================== */
+
+/* Vehicle stories: pinned film version on larger screens, calm editorial block on phones */
+.story-m { display: none; }
+
+@media (max-width: 700px) {
+  .story-scroll { display: none; }
+  .story-m { display: block; border-bottom: 1px solid var(--line-soft); background: var(--bg-deep); }
+  .story-m-media { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+  .story-m-media img { object-fit: cover; }
+  .story-m-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(3, 3, 3, 0) 55%, var(--bg-deep) 100%); }
+  .story-m-count { position: absolute; z-index: 1; left: var(--gutter); top: 16px; font-size: 11px; letter-spacing: 0.16em; color: var(--text); }
+  .story-m-copy { padding: 4px var(--gutter) 40px; display: grid; gap: 14px; }
+  .story-m-name { display: grid; font-weight: 300; text-transform: uppercase; line-height: 1.02; font-size: 22px; letter-spacing: 0.04em; }
+  .story-m-name .dim { font-size: clamp(30px, 9vw, 40px); color: #c8c8c8; letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  .story-m-specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .story-m-specs li { display: grid; gap: 6px; align-content: start; padding: 16px 10px 16px 0; }
+  .story-m-specs li + li { padding-left: 12px; border-left: 1px solid var(--line); }
+  .story-m-big { font-size: clamp(26px, 8vw, 34px); font-weight: 200; line-height: 1; }
+  .story-m-big small { font-size: 0.42em; margin-left: 3px; color: var(--text-2); font-weight: 300; }
+  .story-m-label { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); line-height: 1.4; }
+  .story-m-actions { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+
+  /* 360: media first, controls stacked underneath instead of over the photo */
+  .exp-stage { height: auto; display: flex; flex-direction: column; padding-bottom: 24px; background: var(--bg-deep); }
+  .exp-stage.is-overlay { height: 100svh; justify-content: center; overflow-y: auto; }
+  .exp-head { position: static; order: -1; padding: 22px var(--gutter) 18px; }
+  .exp-view { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 10; }
+  .exp-view[data-mode="interior"] img, .exp-view[data-mode="details"] img { object-fit: contain; }
+  .exp-shade { background: none; }
+  .exp-modes { position: static; margin: 18px var(--gutter) 0; grid-template-columns: repeat(3, 1fr); }
+  .exp-frame-nav { position: static; transform: none; margin: 16px auto 0; }
+  .exp-controls { position: static; margin: 18px var(--gutter) 0; }
+
+  /* floating widgets: smaller so they cover less of forms and specs */
+  .widgets { right: 12px; bottom: 12px; gap: 10px; }
+  .widget { width: 46px; height: 46px; }
+  .widget svg { width: 19px; height: 19px; }
+  .widget-badge { min-width: 19px; height: 19px; font-size: 11px; top: -4px; right: -4px; }
 }

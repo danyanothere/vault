@@ -61,6 +61,8 @@ export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
   const total = String(vehicles.length).padStart(2, "0");
 
   return (
+    <>
+      <MobileStory vehicle={vehicle} total={total} />
     <section ref={ref} id={vehicle.id} className="story-scroll" aria-label={`${name} — ${vehicle.tagline.join(" ")}`}>
       <motion.div className="story-sticky" style={{ clipPath: exitClip }}>
         <motion.div className="story-media" style={{ scale }}>
@@ -145,6 +147,51 @@ export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
           ))}
         </ul>
       </motion.div>
+    </section>
+    </>
+  );
+}
+
+/**
+ * Phones: a calm, unpinned editorial block — sharp photo, name, three specs, CTA.
+ * No film and no sticky scrolling (shown/hidden with CSS so markup stays SSR-stable).
+ */
+function MobileStory({ vehicle, total }: { vehicle: Vehicle; total: string }) {
+  const name = `${vehicle.brand} ${vehicle.modelLines.join(" ")}`;
+  return (
+    <section className="story-m" aria-label={name}>
+      <Link href={`/collection/${vehicle.id}`} className="story-m-media" aria-label={`View ${name}`}>
+        <Image quality={85} src={vehicle.showcase.src} alt={vehicle.showcase.alt} fill sizes="100vw" style={{ objectPosition: vehicle.showcase.position }} />
+        <span className="story-m-count">
+          {vehicle.index} / {total}
+        </span>
+      </Link>
+      <div className="story-m-copy">
+        <h2 className="story-m-name">
+          <span>{vehicle.brand}</span>
+          <span className="dim">{vehicle.modelLines.join(" ")}</span>
+        </h2>
+        <p className="story-tag">{vehicle.tagline.filter(Boolean).join(" ")}</p>
+        <ul className="story-m-specs">
+          {vehicle.story.specs.map((s) => (
+            <li key={s.big}>
+              <span className="story-m-big">
+                {s.big}
+                {s.unit && <small>{s.unit}</small>}
+              </span>
+              <span className="story-m-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="story-m-actions">
+          <Button href="/contact" arrow>
+            Request a private viewing
+          </Button>
+          <Link href={`/collection/${vehicle.id}`} className="btn btn-ghost">
+            <span>View details</span>
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
