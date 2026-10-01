@@ -33,7 +33,10 @@ export default function WatchVideo({ label = "Watch video", title, poster, poste
     <>
       <button type="button" data-cursor="play" className={`btn btn-ghost btn-play ${className}`.trim()} onClick={open}>
         <span className="btn-icon btn-icon-lg">
-          <Play size={13} strokeWidth={1.4} />
+          {/* optically centred triangle (centroid on the circle's centre) */}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true">
+            <path d="M8.5 5.5v13L19 12z" />
+          </svg>
         </span>
         <span>{label}</span>
       </button>

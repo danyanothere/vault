@@ -13,9 +13,10 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
   const multi = vehicle.modelLines.length > 1;
   return (
     <section id={vehicle.id} className="showcase" aria-labelledby={`sc-${vehicle.id}`}>
-      <div className="showcase-media" data-cursor="explore">
+      <div className="showcase-media">
         <Image quality={90} src={vehicle.showcase.src} alt={vehicle.showcase.alt} fill sizes="(max-width: 900px) 100vw, 70vw" priority={priority} style={{ objectPosition: vehicle.showcase.position }} />
         <div className="showcase-shade" aria-hidden="true" />
+        <Link href={`/collection/${vehicle.id}`} className="showcase-media-link" data-cursor="explore" aria-label={`View ${vehicle.brand} ${vehicle.modelLines.join(" ")}`} />
       </div>
 
       <div className="showcase-copy">

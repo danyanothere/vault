@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { animate, stagger } from "motion";
@@ -8,7 +9,6 @@ import { easeLuxury, INTRO_DONE_EVENT } from "@/lib/motion";
 import Button from "./Button";
 import VehicleSelector from "./VehicleSelector";
 import WatchVideo from "./WatchVideo";
-import ViewportVideo from "./motion/ViewportVideo";
 
 export default function HeroSlider() {
   const [active, setActive] = useState(0);
@@ -17,20 +17,11 @@ export default function HeroSlider() {
   const step = useCallback((d: number) => setActive((a) => (a + d + vehicles.length) % vehicles.length), []);
   const reduce = useReducedMotion();
   const root = useRef<HTMLElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
 
   // Intro → hero handoff: the loader's video slit becomes this media area,
   // then the copy rises out of its masks.
   useEffect(() => {
-    const onDone = (e: Event) => {
-      const t = (e as CustomEvent<{ time?: number }>).detail?.time;
-      if (video.current && typeof t === "number") {
-        try {
-          video.current.currentTime = t;
-        } catch {
-          // metadata not ready yet; playback continues from 0
-        }
-      }
+    const onDone = () => {
       const el = root.current;
       if (!el) return;
       const masks = el.querySelectorAll<HTMLElement>("[data-reveal-mask]");
@@ -66,7 +57,16 @@ export default function HeroSlider() {
             animate={{ opacity: 1, scale: 1, transition: { duration: fade ?? 0.6, delay: reduce ? 0 : 0.15, ease: easeLuxury } }}
             exit={{ opacity: 0, scale: reduce ? 1 : 0.985, transition: { duration: fade ?? 0.35, ease: easeLuxury } }}
           >
-            <ViewportVideo ref={video} eager src={v.video.src} poster={v.video.poster} className="hero-video" />
+            <Image
+              quality={90}
+              src={v.hero.src}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 900px) 100vw, 72vw"
+              className="hero-photo"
+              style={{ objectPosition: v.hero.position }}
+            />
           </motion.div>
         </AnimatePresence>
         <motion.div

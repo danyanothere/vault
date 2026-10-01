@@ -24,11 +24,24 @@ export type Vehicle = {
   video: { src: string; poster: string };
   /** Barely-visible tint behind the vehicle (rgb triplet). */
   ambient: string;
+  /** Scroll story: three oversized specs, then the closing line. */
+  story: {
+    specs: { big: string; unit?: string; label: string }[];
+    final: string[];
+  };
 };
 
 export const vehicles: Vehicle[] = [
   {
     id: "maserati-quattroporte",
+    story: {
+      specs: [
+        { big: "V6", label: "3.0 L twin-turbo · Ferrari-built" },
+        { big: "430", unit: "HP", label: "580 Nm of torque" },
+        { big: "Q4", label: "Intelligent all-wheel drive" },
+      ],
+      final: ["Italian", "grand", "touring."],
+    },
     ambient: "214, 150, 70",
     video: { src: "/videos/maserati.mp4", poster: "/videos/maserati-poster.webp" },
     index: "01",
@@ -61,6 +74,14 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "brabus-gls",
+    story: {
+      specs: [
+        { big: "V8", label: "4.0 L biturbo · hand-finished engine" },
+        { big: "800", unit: "HP", label: "1,000 Nm of torque" },
+        { big: "4MATIC", label: "Permanent all-wheel drive" },
+      ],
+      final: ["Power.", "Without", "compromise."],
+    },
     ambient: "200, 190, 175",
     video: { src: "/videos/brabus.mp4", poster: "/videos/brabus-poster.webp" },
     index: "02",
@@ -89,6 +110,14 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "porsche-911-turbo",
+    story: {
+      specs: [
+        { big: "3.8", unit: "L", label: "Twin-turbo flat-six" },
+        { big: "580", unit: "HP", label: "750 Nm of torque" },
+        { big: "AWD", label: "Porsche Traction Management" },
+      ],
+      final: ["The art", "of driving."],
+    },
     ambient: "190, 60, 50",
     video: { src: "/videos/porsche.mp4", poster: "/videos/porsche-poster.webp" },
     index: "03",

@@ -1,6 +1,6 @@
 import HeroSlider from "@/components/HeroSlider";
 import VehicleShowcase from "@/components/VehicleShowcase";
-import BrabusStory from "@/components/BrabusStory";
+import VehicleStory from "@/components/VehicleStory";
 import AuctionSection from "@/components/AuctionSection";
 import TrustStrip from "@/components/TrustStrip";
 import ContactCTA from "@/components/ContactCTA";
@@ -11,7 +11,8 @@ export default function HomePage() {
     <>
       <HeroSlider />
       <div id="home-next">
-        <BrabusStory vehicle={vehicles[1]} />
+        <VehicleStory vehicle={vehicles[0]} />
+        <VehicleStory vehicle={vehicles[1]} />
         <VehicleShowcase vehicle={vehicles[2]} />
       </div>
       <AuctionSection />

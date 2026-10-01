@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { createTimeline, cubicBezier, stagger } from "animejs";
 import { vehicles } from "@/data/vehicles";
@@ -29,7 +30,7 @@ export default function IntroLoader() {
   const label = useRef<HTMLParagraphElement>(null);
   const meta = useRef<HTMLDivElement>(null);
   const slit = useRef<HTMLDivElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
+  const photo = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -55,8 +56,8 @@ export default function IntroLoader() {
     // Target rectangle: the hero media area if this page has one, else the full screen.
     const target = document.querySelector<HTMLElement>(".hero-media")?.getBoundingClientRect();
     const box = target && target.height > 0 ? { x: target.left, y: target.top, w: target.width, h: target.height } : { x: 0, y: 0, w: W, h: H };
-    if (video.current) {
-      Object.assign(video.current.style, { left: `${box.x}px`, top: `${box.y}px`, width: `${box.w}px`, height: `${box.h}px` });
+    if (photo.current) {
+      Object.assign(photo.current.style, { left: `${box.x}px`, top: `${box.y}px`, width: `${box.w}px`, height: `${box.h}px` });
     }
 
     // Clip expressed as insets (px) of the full-screen slit layer.
@@ -94,7 +95,7 @@ export default function IntroLoader() {
       .add(meta.current!, { opacity: [1, 0], duration: 300 * k }, 1700 * k)
       .add(clip, { t: box.y, b: H - box.y - box.h, duration: 650 * k, onUpdate: paint }, 1700 * k)
       .call(() => {
-        window.dispatchEvent(new CustomEvent(INTRO_DONE_EVENT, { detail: { time: video.current?.currentTime } }));
+        window.dispatchEvent(new CustomEvent(INTRO_DONE_EVENT));
       }, 2150 * k)
       .add(bg.current!, { opacity: [1, 0], duration: 350 * k }, 2250 * k)
       .add(slit.current!, { opacity: [1, 0], duration: 250 * k }, 2400 * k);
@@ -110,7 +111,9 @@ export default function IntroLoader() {
     <div ref={root} className="intro" aria-hidden="true">
       <div ref={bg} className="intro-bg" />
       <div ref={slit} className="intro-slit">
-        <video ref={video} src={hero.video.src} poster={hero.video.poster} muted playsInline autoPlay preload="auto" />
+        <div ref={photo} className="intro-photo">
+          <Image quality={90} src={hero.hero.src} alt="" fill priority sizes="(max-width: 900px) 100vw, 72vw" style={{ objectPosition: hero.hero.position }} />
+        </div>
       </div>
 
       <div ref={meta} className="intro-meta">
