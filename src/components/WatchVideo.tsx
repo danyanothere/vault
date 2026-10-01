@@ -23,7 +23,7 @@ export default function WatchVideo({ label = "Watch video", title, poster, poste
     if (video.current) {
       video.current.currentTime = 0;
       video.current.play().catch(() => {
-        // autoplay with sound can be blocked; the controls stay available
+        // autoplay can be blocked; the controls stay available
       });
     }
   };
@@ -48,7 +48,7 @@ export default function WatchVideo({ label = "Watch video", title, poster, poste
       >
         <div className="video-frame">
           {src ? (
-            <video ref={video} src={src} poster={poster} controls playsInline preload="none" />
+            <video ref={video} src={src} poster={poster} controls muted playsInline loop preload="none" />
           ) : (
             <>
               <Image src={poster} alt="" fill sizes="(max-width: 1100px) 100vw, 1100px" style={{ objectPosition: posterPosition }} />
