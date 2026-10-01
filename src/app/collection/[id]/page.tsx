@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VehicleDetail from "./VehicleDetail";
 import ContactCTA from "@/components/ContactCTA";
-import FloatingPhone from "@/components/FloatingPhone";
 import { getVehicle, vehicleName, vehicles } from "@/data/vehicles";
 
 export const dynamicParams = false;
@@ -25,7 +24,6 @@ export default async function VehiclePage({ params }: PageProps<"/collection/[id
     <>
       <VehicleDetail id={v.id} />
       <ContactCTA />
-      <FloatingPhone />
     </>
   );
 }

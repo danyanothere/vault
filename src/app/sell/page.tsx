@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Lock, Camera, Network, Handshake } from "lucide-react";
 import SellForm from "./SellForm";
 import TrustStrip from "@/components/TrustStrip";
-import FloatingPhone from "@/components/FloatingPhone";
 
 export const metadata: Metadata = {
   title: "Sell Your Automobile",
@@ -54,7 +53,6 @@ export default function SellPage() {
       </section>
       <TrustStrip />
       <div style={{ height: "var(--section-y)" }} />
-      <FloatingPhone />
     </>
   );
 }

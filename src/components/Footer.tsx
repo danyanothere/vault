@@ -38,8 +38,8 @@ export default function Footer() {
       <div className="footer-bottom">
         <p>© 2026 VAULT. All rights reserved.</p>
         <p className="footer-legal">
-          <Link href="/contact">Privacy Policy</Link>
-          <Link href="/contact">Terms of Service</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
         </p>
       </div>
     </footer>

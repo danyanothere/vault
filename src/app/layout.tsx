@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import IntroLoader from "@/components/IntroLoader";
 import { LanguageProvider } from "@/components/Language";
+import Widgets from "@/components/Widgets";
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <Widgets />
         </LanguageProvider>
       </body>
     </html>

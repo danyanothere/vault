@@ -55,8 +55,8 @@ export default function Header() {
           ))}
         </nav>
         <div className="header-actions">
-          <a href={PHONE_HREF} className="icon-circle icon-circle-accent header-phone" aria-label={t("call")}>
-            <Phone size={15} strokeWidth={1.5} />
+          <a href={PHONE_HREF} className="phone-ring" aria-label={t("call")}>
+            <Phone size={17} strokeWidth={2} />
           </a>
           <span className="v-sep" aria-hidden="true" />
           <Link href="/contact" className="btn btn-outline btn-sm header-cta">

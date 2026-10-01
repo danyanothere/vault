@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import AuctionSection from "@/components/AuctionSection";
 import TrustStrip from "@/components/TrustStrip";
 import ContactCTA from "@/components/ContactCTA";
-import FloatingPhone from "@/components/FloatingPhone";
 import SectionHeading from "@/components/SectionHeading";
 
 export const metadata: Metadata = {
@@ -48,7 +47,6 @@ export default function AuctionPage() {
         </div>
       </section>
       <ContactCTA />
-      <FloatingPhone />
     </>
   );
 }

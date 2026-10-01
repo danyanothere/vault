@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ContactForm from "./ContactForm";
-import FloatingPhone from "@/components/FloatingPhone";
 
 export const metadata: Metadata = {
   title: "Request Access",
@@ -17,7 +16,6 @@ export default function ContactPage() {
         </div>
         <ContactForm />
       </section>
-      <FloatingPhone />
     </>
   );
 }

@@ -3,7 +3,6 @@ import VehicleShowcase from "@/components/VehicleShowcase";
 import AuctionSection from "@/components/AuctionSection";
 import TrustStrip from "@/components/TrustStrip";
 import ContactCTA from "@/components/ContactCTA";
-import FloatingPhone from "@/components/FloatingPhone";
 import { vehicles } from "@/data/vehicles";
 
 export const metadata: Metadata = {
@@ -20,7 +19,6 @@ export default function CollectionPage() {
       <AuctionSection />
       <TrustStrip />
       <ContactCTA />
-      <FloatingPhone />
     </>
   );
 }

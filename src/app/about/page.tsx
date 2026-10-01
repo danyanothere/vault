@@ -7,7 +7,6 @@ import BenefitStrip from "@/components/BenefitStrip";
 import ServicesSection from "@/components/ServicesSection";
 import StatsStrip from "@/components/StatsStrip";
 import ContactCTA from "@/components/ContactCTA";
-import FloatingPhone from "@/components/FloatingPhone";
 
 export const metadata: Metadata = {
   title: "About",
@@ -150,7 +149,6 @@ export default function AboutPage() {
         image="/images/about/coastal-porsche.webp"
         imagePosition="50% 65%"
       />
-      <FloatingPhone />
     </>
   );
 }
