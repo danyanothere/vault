@@ -4,7 +4,7 @@ import ContactCTA from "@/components/ContactCTA";
 
 export const metadata: Metadata = {
   title: "360° Experience",
-  description: "Explore every detail of the collection.",
+  description: "Explore every detail of the Maserati Quattroporte — exterior, interior and details.",
 };
 
 export default function ExperiencePage() {

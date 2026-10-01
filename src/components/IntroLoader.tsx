@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 const KEY = "vault-intro-seen";
 const steps = [
-  { n: "01", label: "Loading" },
-  { n: "02", label: "Initialization" },
-  { n: "03", label: "Loading collection" },
-  { n: "04", label: "Welcome" },
+  { n: "01", label: "Loading", pct: 0 },
+  { n: "02", label: "Initialization", pct: 35 },
+  { n: "03", label: "Loading collection", pct: 72 },
+  { n: "04", label: "Welcome", pct: 100 },
 ];
 
 // The inline script in layout.tsx adds `intro-seen` to <html> before paint,
@@ -30,13 +30,13 @@ export default function IntroLoader() {
       later(0, () => setPhase("done"));
     } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       later(0, () => setStep(3));
-      later(500, () => setPhase("done"));
+      later(450, () => setPhase("done"));
     } else {
-      later(480, () => setStep(1));
-      later(960, () => setStep(2));
-      later(1440, () => setStep(3));
-      later(2000, () => setPhase("exit"));
-      later(2500, () => setPhase("done"));
+      later(450, () => setStep(1));
+      later(1000, () => setStep(2));
+      later(1500, () => setStep(3));
+      later(2050, () => setPhase("exit"));
+      later(2700, () => setPhase("done"));
     }
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, []);
@@ -47,26 +47,25 @@ export default function IntroLoader() {
   return (
     <div className={`intro ${phase === "exit" ? "intro-exit" : ""}`} aria-hidden="true">
       <div className="intro-step" key={s.n}>
-        <span className="accent">{s.n}</span> {s.label}
+        <span>{s.n}</span> {s.label}
       </div>
-      <div className="intro-center" key={step < 3 ? "logo" : "welcome"}>
-        {step < 3 ? (
+      <div className="intro-center" key={step === 1 ? "v" : "logo"}>
+        {step === 1 ? (
+          <span className="intro-v">V</span>
+        ) : (
           <>
             <span className="intro-logo">VAULT</span>
             <span className="logo-sub">Private Automobiles</span>
           </>
-        ) : (
-          <span className="intro-welcome">
-            Rare cars.
-            <br />
-            Private access.
-          </span>
         )}
+        <div className="intro-bar">
+          <div className="intro-progress">
+            <span style={{ transform: `scaleX(${Math.max(s.pct, 2) / 100})` }} />
+          </div>
+          <span className="intro-pct">{s.pct}%</span>
+        </div>
+        {step === 3 && <p className="intro-welcome">Rare cars. Private access.</p>}
       </div>
-      <div className="intro-progress">
-        <span style={{ transform: `scaleX(${(step + 1) / 4})` }} />
-      </div>
-      <div className="intro-pct">{String((step + 1) * 25).padStart(3, "0")}%</div>
     </div>
   );
 }

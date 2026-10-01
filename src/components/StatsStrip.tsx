@@ -11,7 +11,16 @@ export default function StatsStrip() {
     <ul className="stats">
       {stats.map((s) => (
         <li key={s.l}>
-          <span className="stat-value">{s.v}</span>
+          <span className="stat-value">
+            {s.v.endsWith("%") ? (
+              <>
+                {s.v.slice(0, -1)}
+                <small>%</small>
+              </>
+            ) : (
+              s.v
+            )}
+          </span>
           <span className="stat-label">{s.l}</span>
         </li>
       ))}

@@ -3,15 +3,15 @@ import Link from "next/link";
 import Arrow from "./Arrow";
 
 const services = [
-  { n: "01", title: "Private sales", text: "Discreet acquisition and sale of exceptional automobiles, off-market.", img: "/images/garage.jpg", href: "/collection" },
-  { n: "02", title: "Vehicle sourcing", text: "We locate the specific car you are looking for, anywhere in the world.", img: "/images/gtr-dark.jpg", href: "/contact" },
-  { n: "03", title: "Inspection & advice", text: "Independent inspection, provenance checks and honest valuation.", img: "/images/headlight.jpg", href: "/contact" },
-  { n: "04", title: "Concierge services", text: "Logistics, registration, storage and delivery, handled end to end.", img: "/images/villa.jpg", href: "/contact" },
+  { n: "01", title: "Private sales", text: "We help you sell your vehicle to the right buyer, with targeted marketing and a private network.", img: "/images/services/sedan-front.webp", href: "/sell" },
+  { n: "02", title: "Vehicle sourcing", text: "Looking for a specific model? We find exceptional cars locally and internationally.", img: "/images/services/steering-wheel.webp", href: "/contact?interest=sourcing" },
+  { n: "03", title: "Inspection & advice", text: "Independent evaluation, condition reports and expert guidance.", img: "/images/services/wheel-caliper.webp", href: "/contact" },
+  { n: "04", title: "Concierge services", text: "Documentation, transport, registration, insurance, detailing and full logistical support.", img: "/images/services/brabus-rear.webp", href: "/contact" },
 ];
 
 export default function ServicesGrid() {
   return (
-    <ul className="services-grid">
+    <ul className="services-grid" id="services-list">
       {services.map((s) => (
         <li key={s.n}>
           <Link href={s.href} className="service-card">

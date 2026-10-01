@@ -4,7 +4,7 @@ import Arrow from "./Arrow";
 
 type Props = {
   href?: string;
-  variant?: "primary" | "outline" | "ghost";
+  variant?: "primary" | "outline" | "outline-light" | "ghost";
   arrow?: boolean;
   icon?: ReactNode;
   children: ReactNode;

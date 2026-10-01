@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import Logo from "./Logo";
 import { navItems } from "./nav";
+import { LangSwitch, useLang } from "./Language";
 import { InstagramIcon, TelegramIcon, YoutubeIcon } from "./Icons";
 
 export default function Footer() {
+  const { t } = useLang();
   return (
     <footer className="site-footer">
       <div className="footer-top">
@@ -11,25 +15,22 @@ export default function Footer() {
         <nav aria-label="Footer" className="footer-nav">
           {navItems.map((i) => (
             <Link key={i.href} href={i.href}>
-              {i.label}
+              {t(i.key)}
             </Link>
           ))}
         </nav>
         <div className="footer-side">
-          <p className="footer-langs" aria-label="Languages">
-            <span className="active">EN</span>
-            <span>RO</span>
-            <span>RU</span>
-          </p>
+          <span className="v-sep" aria-hidden="true" />
+          <LangSwitch />
           <div className="footer-social">
-            <a href="https://instagram.com" aria-label="Instagram" className="icon-circle" target="_blank" rel="noreferrer">
-              <InstagramIcon />
+            <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noreferrer">
+              <InstagramIcon size={17} />
             </a>
-            <a href="https://youtube.com" aria-label="YouTube" className="icon-circle" target="_blank" rel="noreferrer">
-              <YoutubeIcon />
+            <a href="https://youtube.com" aria-label="YouTube" target="_blank" rel="noreferrer">
+              <YoutubeIcon size={18} />
             </a>
-            <a href="https://telegram.org" aria-label="Telegram" className="icon-circle" target="_blank" rel="noreferrer">
-              <TelegramIcon />
+            <a href="https://telegram.org" aria-label="Telegram" target="_blank" rel="noreferrer">
+              <TelegramIcon size={16} />
             </a>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { BadgeCheck, FileSearch, Lock, UserRound, Truck } from "lucide-react";
 import AuctionSection from "@/components/AuctionSection";
-import BenefitStrip from "@/components/BenefitStrip";
+import TrustStrip from "@/components/TrustStrip";
 import ContactCTA from "@/components/ContactCTA";
 import FloatingPhone from "@/components/FloatingPhone";
 import SectionHeading from "@/components/SectionHeading";
@@ -22,17 +21,7 @@ export default function AuctionPage() {
   return (
     <>
       <AuctionSection headingLevel="h1" />
-      <div className="container">
-        <BenefitStrip
-          items={[
-            { icon: BadgeCheck, title: "Verified automobiles", text: "Full inspection & documentation" },
-            { icon: FileSearch, title: "Transparent history", text: "Verified provenance & service records" },
-            { icon: Lock, title: "Private transactions", text: "Discreet and secure process" },
-            { icon: UserRound, title: "Personal assistance", text: "Dedicated support for every client" },
-            { icon: Truck, title: "International delivery", text: "Worldwide delivery options" },
-          ]}
-        />
-      </div>
+      <TrustStrip />
       <section className="section">
         <div className="container">
           <SectionHeading

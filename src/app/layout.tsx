@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/manrope/200.css";
-import "@fontsource/manrope/300.css";
-import "@fontsource/manrope/400.css";
-import "@fontsource/manrope/500.css";
-import "@fontsource/manrope/600.css";
+import "@fontsource/montserrat/200.css";
+import "@fontsource/montserrat/300.css";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/500.css";
+import "@fontsource/montserrat/600.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import IntroLoader from "@/components/IntroLoader";
+import { LanguageProvider } from "@/components/Language";
 
 export const metadata: Metadata = {
   title: {
@@ -33,10 +34,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <IntroLoader />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <IntroLoader />
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

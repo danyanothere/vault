@@ -1,129 +1,245 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
-import { DoorOpen, Expand, Hand, Package, Armchair } from "lucide-react";
-import SectionHeading from "@/components/SectionHeading";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Box, Mouse, DoorOpen, Package, Armchair, Expand, Shrink, ChevronLeft, ChevronRight } from "lucide-react";
+import { maseratiExperience as media, type Frame } from "@/data/experience";
 
-const views = {
-  exterior: { label: "Exterior", src: "/images/hero-sedan.jpg" },
-  interior: { label: "Interior", src: "/images/garage.jpg" },
-  details: { label: "Details", src: "/images/headlight.jpg" },
-} as const;
-type View = keyof typeof views;
+type Mode = "exterior" | "interior" | "details";
+const modes: Mode[] = ["exterior", "interior", "details"];
+const STEP_PX = 60; // horizontal drag distance per frame (use ~12px for a 36-frame turntable)
 
 export default function Experience360() {
-  const [view, setView] = useState<View>("exterior");
-  const [angle, setAngle] = useState(0);
+  const [mode, setMode] = useState<Mode>("exterior");
   const [doors, setDoors] = useState(false);
   const [trunk, setTrunk] = useState(false);
+  const [frame, setFrame] = useState(0);
+  const [full, setFull] = useState<"off" | "native" | "overlay">("off");
   const [dragging, setDragging] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
-  const last = useRef(0);
+  const drag = useRef({ x: 0, acc: 0, raf: 0, pending: 0 });
 
+  const picked: Frame[] =
+    mode === "exterior" ? (doors ? media.exterior.doorsOpen : trunk ? media.exterior.trunkOpen : media.exterior.closed) : media[mode];
+  const frames = picked.length ? picked : media.exterior.closed;
+  const count = frames.length;
+  const current = frames[((frame % count) + count) % count];
+  const trunkAvailable = media.exterior.trunkOpen.length > 0;
+  const doorsAvailable = media.exterior.doorsOpen.length > 0;
+
+  const go = useCallback((d: number) => setFrame((f) => (((f + d) % count) + count) % count), [count]);
+
+  const selectMode = (m: Mode) => {
+    setMode(m);
+    setFrame(0);
+    if (m !== "exterior") {
+      setDoors(false);
+      setTrunk(false);
+    }
+  };
+
+  /* pointer drag → frame steps, batched per animation frame */
   const onDown = (e: React.PointerEvent) => {
+    drag.current.x = e.clientX;
+    drag.current.acc = 0;
     setDragging(true);
-    last.current = e.clientX;
     e.currentTarget.setPointerCapture(e.pointerId);
   };
   const onMove = (e: React.PointerEvent) => {
     if (!dragging) return;
-    const dx = e.clientX - last.current;
-    last.current = e.clientX;
-    setAngle((a) => (a + dx * 0.4 + 360) % 360);
+    const d = drag.current;
+    d.acc += e.clientX - d.x;
+    d.x = e.clientX;
+    const steps = Math.trunc(d.acc / STEP_PX);
+    if (!steps) return;
+    d.acc -= steps * STEP_PX;
+    d.pending -= steps; // drag right turns the car towards its left side
+    if (!d.raf) {
+      d.raf = requestAnimationFrame(() => {
+        const p = d.pending;
+        d.pending = 0;
+        d.raf = 0;
+        go(p);
+      });
+    }
   };
-  const onKey = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") setAngle((a) => (a + 345) % 360);
-    if (e.key === "ArrowRight") setAngle((a) => (a + 15) % 360);
-  };
-  const fullscreen = () => {
-    const el = stageRef.current;
-    if (!el) return;
-    if (document.fullscreenElement) document.exitFullscreen();
-    else el.requestFullscreen?.();
+  const onUp = (e: React.PointerEvent) => {
+    setDragging(false);
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
   };
 
-  // Simulated rotation: horizontal pan + mirror past 180°.
-  const t = Math.sin((angle * Math.PI) / 180);
-  const flip = angle > 90 && angle < 270 ? -1 : 1;
-  const pos = `${50 + t * 30}% 55%`;
+  /* fullscreen: native API, falling back to a fixed overlay */
+  const toggleFull = async () => {
+    if (full === "native") {
+      await document.exitFullscreen?.();
+      return;
+    }
+    if (full === "overlay") {
+      setFull("off");
+      return;
+    }
+    const el = stageRef.current;
+    if (el?.requestFullscreen) {
+      try {
+        await el.requestFullscreen();
+        setFull("native");
+        return;
+      } catch {
+        // fall through to overlay
+      }
+    }
+    setFull("overlay");
+  };
+
+  useEffect(() => {
+    const onChange = () => {
+      if (!document.fullscreenElement) setFull((f) => (f === "native" ? "off" : f));
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFull((f) => (f === "overlay" ? "off" : f));
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = full === "overlay" ? "hidden" : "";
+  }, [full]);
+
+  /* preload neighbours of the current frame */
+  useEffect(() => {
+    [-2, -1, 1, 2].forEach((o) => {
+      const f = frames[(((frame + o) % count) + count) % count];
+      const img = new window.Image();
+      img.src = `/_next/image?url=${encodeURIComponent(f.src)}&w=1920&q=75`;
+    });
+  }, [frame, frames, count]);
+
+  const isFull = full !== "off";
 
   return (
-    <div className="container">
-      <div className="exp-head">
-        <SectionHeading
-          as="h1"
-          eyebrow="360° experience"
-          title={
-            <>
-              Explore
-              <br />
-              every detail.
-            </>
-          }
-        />
-        <div className="tabs" role="tablist" aria-label="View">
-          {(Object.keys(views) as View[]).map((k) => (
-            <button key={k} type="button" role="tab" aria-selected={view === k} onClick={() => setView(k)}>
-              {views[k].label}
+    <section className="exp" aria-labelledby="exp-title">
+      <div
+        ref={stageRef}
+        className={`exp-stage ${dragging ? "dragging" : ""} ${full === "overlay" ? "is-overlay" : ""}`}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") go(-1);
+          if (e.key === "ArrowRight") go(1);
+        }}
+      >
+        <div
+          className="exp-view"
+          data-mode={mode}
+          tabIndex={0}
+          role="img"
+          aria-roledescription="360 degree viewer"
+          aria-label={`${mode} view: ${current.label}. Drag or use arrow keys to change the angle.`}
+          onPointerDown={onDown}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+        >
+          {frames.map((f, i) => (
+            <Image
+              key={`${mode}-${doors}-${trunk}-${f.src}-${f.label}`}
+              src={f.src}
+              alt=""
+              fill
+              sizes="100vw"
+              priority={i === 0}
+              draggable={false}
+              className={i === ((frame % count) + count) % count ? "is-active" : undefined}
+              style={{ objectPosition: f.position }}
+            />
+          ))}
+          <div className="exp-shade" aria-hidden="true" />
+        </div>
+
+        <div className="exp-head">
+          <span className="exp-cube" aria-hidden="true">
+            <Box size={22} strokeWidth={1.1} />
+          </span>
+          <div>
+            <h1 id="exp-title" className="exp-title">
+              360° Experience
+            </h1>
+            <p className="exp-sub">Explore every detail</p>
+          </div>
+        </div>
+
+        <div className="exp-modes" role="tablist" aria-label="View">
+          {modes.map((m) => (
+            <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => selectMode(m)}>
+              {m}
             </button>
           ))}
         </div>
-      </div>
 
-      <div
-        ref={stageRef}
-        className={`stage ${dragging ? "dragging" : ""}`}
-        tabIndex={0}
-        role="img"
-        aria-label={`${views[view].label} view, rotated ${Math.round(angle)} degrees. Use arrow keys to rotate.`}
-        onPointerDown={onDown}
-        onPointerMove={onMove}
-        onPointerUp={() => setDragging(false)}
-        onPointerCancel={() => setDragging(false)}
-        onKeyDown={onKey}
-      >
-        {(Object.keys(views) as View[]).map((k) => (
-          <Image
-            key={k}
-            src={views[k].src}
-            alt=""
-            fill
-            priority={k === "exterior"}
-            sizes="100vw"
-            draggable={false}
-            style={{
-              opacity: view === k ? 1 : 0,
-              objectPosition: k === "exterior" ? pos : "50% 50%",
-              transform: k === "exterior" ? `scaleX(${flip}) scale(${doors || trunk ? 1.06 : 1})` : undefined,
-              filter: doors || trunk ? "brightness(1.12)" : undefined,
-            }}
-          />
-        ))}
-        <div className="stage-state">
-          {doors && <span>Doors open</span>}
-          {trunk && <span>Trunk open</span>}
+        <div className="exp-frame-nav">
+          <button type="button" className="icon-circle" aria-label="Previous angle" onClick={() => go(-1)}>
+            <ChevronLeft size={16} strokeWidth={1.3} />
+          </button>
+          <span className="exp-frame-label">
+            {current.label}
+            <small>
+              {String(((frame % count) + count) % count + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+            </small>
+          </span>
+          <button type="button" className="icon-circle" aria-label="Next angle" onClick={() => go(1)}>
+            <ChevronRight size={16} strokeWidth={1.3} />
+          </button>
         </div>
-        <span className="stage-angle">{String(Math.round(angle)).padStart(3, "0")}°</span>
-        <span className="stage-hint">
-          <Hand size={13} strokeWidth={1.3} aria-hidden="true" /> Drag to rotate
-        </span>
-      </div>
 
-      <div className="exp-actions">
-        <button type="button" className="chip" aria-pressed={doors} onClick={() => setDoors((d) => !d)}>
-          <DoorOpen size={14} strokeWidth={1.2} aria-hidden="true" /> Open doors
-        </button>
-        <button type="button" className="chip" aria-pressed={trunk} onClick={() => setTrunk((d) => !d)}>
-          <Package size={14} strokeWidth={1.2} aria-hidden="true" /> Open trunk
-        </button>
-        <button type="button" className="chip" aria-pressed={view === "interior"} onClick={() => setView((v) => (v === "interior" ? "exterior" : "interior"))}>
-          <Armchair size={14} strokeWidth={1.2} aria-hidden="true" /> Toggle interior
-        </button>
-        <button type="button" className="chip" onClick={fullscreen}>
-          <Expand size={14} strokeWidth={1.2} aria-hidden="true" /> Full screen
-        </button>
+        <div className="exp-controls">
+          <div className="exp-control is-static">
+            <Mouse size={22} strokeWidth={1} aria-hidden="true" />
+            <span>Drag to rotate</span>
+          </div>
+          <button
+            type="button"
+            className="exp-control"
+            aria-pressed={doors}
+            disabled={!doorsAvailable}
+            onClick={() => {
+              setMode("exterior");
+              setTrunk(false);
+              setDoors((d) => !d);
+              setFrame(0);
+            }}
+          >
+            <DoorOpen size={22} strokeWidth={1} aria-hidden="true" />
+            <span>{doors ? "Close door" : "Open door"}</span>
+          </button>
+          <button
+            type="button"
+            className="exp-control"
+            aria-pressed={trunk}
+            disabled={!trunkAvailable}
+            title={trunkAvailable ? undefined : "Trunk imagery coming soon"}
+            onClick={() => {
+              setMode("exterior");
+              setDoors(false);
+              setTrunk((t) => !t);
+              setFrame(0);
+            }}
+          >
+            <Package size={22} strokeWidth={1} aria-hidden="true" />
+            <span>{trunkAvailable ? "Open trunk" : "Open trunk · soon"}</span>
+          </button>
+          <button type="button" className="exp-control" aria-pressed={mode === "interior"} onClick={() => selectMode(mode === "interior" ? "exterior" : "interior")}>
+            <Armchair size={22} strokeWidth={1} aria-hidden="true" />
+            <span>Toggle interior</span>
+          </button>
+          <button type="button" className="exp-control" aria-pressed={isFull} onClick={toggleFull}>
+            {isFull ? <Shrink size={22} strokeWidth={1} aria-hidden="true" /> : <Expand size={22} strokeWidth={1} aria-hidden="true" />}
+            <span>{isFull ? "Exit full screen" : "Full screen"}</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
