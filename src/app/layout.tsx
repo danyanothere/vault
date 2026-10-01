@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import IntroLoader from "@/components/IntroLoader";
 import { LanguageProvider } from "@/components/Language";
 import Widgets from "@/components/Widgets";
+import ContextCursor from "@/components/motion/ContextCursor";
+import RevealObserver from "@/components/motion/RevealObserver";
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +25,8 @@ export const viewport: Viewport = {
   themeColor: "#050505",
 };
 
-const introScript = `try{if(sessionStorage.getItem("vault-intro-seen")==="1")document.documentElement.classList.add("intro-seen")}catch(e){}`;
+// Runs before first paint: decides whether the intro plays (hero copy then waits hidden for the handoff).
+const introScript = `try{var d=document.documentElement;if(sessionStorage.getItem("vault-intro-seen")==="1"||matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("intro-seen");else d.classList.add("intro-play")}catch(e){document.documentElement.classList.add("intro-seen")}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -41,6 +44,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="main">{children}</main>
           <Footer />
           <Widgets />
+          <ContextCursor />
+          <RevealObserver />
         </LanguageProvider>
       </body>
     </html>

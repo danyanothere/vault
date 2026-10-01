@@ -35,7 +35,7 @@ export default function ContactCTA({
           </h2>
           <p className="body-muted">{text}</p>
           <div className="btn-row">
-            <Button href="/contact" arrow>
+            <Button href="/contact" arrow magnetic>
               Request access
             </Button>
             <Button href={PHONE_HREF} variant="outline" icon={<Phone size={14} strokeWidth={1.5} />} className="btn-call">

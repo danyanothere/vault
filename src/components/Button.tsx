@@ -11,9 +11,11 @@ type Props = {
   type?: "button" | "submit";
   onClick?: () => void;
   className?: string;
+  /** Subtle magnetic pull on fine pointers (handled by ContextCursor). */
+  magnetic?: boolean;
 };
 
-export default function Button({ href, variant = "primary", arrow, icon, children, type = "button", onClick, className = "" }: Props) {
+export default function Button({ href, variant = "primary", arrow, icon, children, type = "button", onClick, className = "", magnetic = false }: Props) {
   const cls = `btn btn-${variant} ${className}`.trim();
   const inner = (
     <>
@@ -24,13 +26,13 @@ export default function Button({ href, variant = "primary", arrow, icon, childre
   );
   if (href) {
     return (
-      <Link href={href} className={cls} onClick={onClick}>
+      <Link href={href} className={cls} onClick={onClick} data-magnetic={magnetic || undefined}>
         {inner}
       </Link>
     );
   }
   return (
-    <button type={type} className={cls} onClick={onClick}>
+    <button type={type} className={cls} onClick={onClick} data-magnetic={magnetic || undefined}>
       {inner}
     </button>
   );

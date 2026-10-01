@@ -14,7 +14,7 @@ export default function ServicesGrid() {
     <ul className="services-grid" id="services-list">
       {services.map((s) => (
         <li key={s.n}>
-          <Link href={s.href} className="service-card">
+          <Link href={s.href} className="service-card" data-cursor="explore">
             <span className="service-img">
               <Image src={s.img} alt="" fill quality={90} sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw" />
             </span>

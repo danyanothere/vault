@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Mouse, DoorOpen, Package, Armchair, Expand, Shrink, ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { maseratiExperience as media, type Frame } from "@/data/experience";
+import { easeLuxury } from "@/lib/motion";
 
 type Mode = "exterior" | "interior" | "details";
 const modes: Mode[] = ["exterior", "interior", "details"];
@@ -18,6 +20,7 @@ export default function Experience360() {
   const [dragging, setDragging] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const drag = useRef({ x: 0, acc: 0, raf: 0, pending: 0 });
+  const reduce = useReducedMotion();
 
   const picked: Frame[] =
     mode === "exterior" ? (doors ? media.exterior.doorsOpen : trunk ? media.exterior.trunkOpen : media.exterior.closed) : media[mode];
@@ -119,6 +122,21 @@ export default function Experience360() {
     });
   }, [frame, frames, count]);
 
+  /* then warm the cache with every other view once the page is idle */
+  useEffect(() => {
+    const all = [...media.exterior.closed, ...media.exterior.doorsOpen, ...media.exterior.trunkOpen, ...media.interior, ...media.details];
+    const run = () =>
+      all.forEach((f) => {
+        const img = new window.Image();
+        img.src = `/_next/image?url=${encodeURIComponent(f.src)}&w=1920&q=90`;
+      });
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    const id = w.requestIdleCallback ? w.requestIdleCallback(run) : window.setTimeout(run, 2500);
+    return () => {
+      if (!w.requestIdleCallback) window.clearTimeout(id);
+    };
+  }, []);
+
   const isFull = full !== "off";
 
   return (
@@ -133,6 +151,7 @@ export default function Experience360() {
       >
         <div
           className="exp-view"
+          data-cursor="drag"
           data-mode={mode}
           tabIndex={0}
           role="img"
@@ -143,19 +162,36 @@ export default function Experience360() {
           onPointerUp={onUp}
           onPointerCancel={onUp}
         >
-          {frames.map((f, i) => (
-            <Image quality={90}
-              key={`${mode}-${doors}-${trunk}-${f.src}-${f.label}`}
-              src={f.src}
-              alt=""
-              fill
-              sizes="100vw"
-              priority={i === 0}
-              draggable={false}
-              className={i === ((frame % count) + count) % count ? "is-active" : undefined}
-              style={{ objectPosition: f.position }}
-            />
-          ))}
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={`${mode}-${doors}-${trunk}`}
+              className="exp-set"
+              initial={reduce ? { opacity: 0 } : { clipPath: "inset(0% 0% 0% 100%)" }}
+              animate={reduce ? { opacity: 1 } : { clipPath: "inset(0% 0% 0% 0%)" }}
+              exit={{ opacity: 0, transition: { duration: 0.4, delay: 0.3 } }}
+              transition={{ duration: 0.75, ease: easeLuxury }}
+            >
+              {frames.map((f, i) => {
+                const cur = ((frame % count) + count) % count;
+                const dist = Math.min(Math.abs(i - cur), count - Math.abs(i - cur));
+                if (dist > 2) return null;
+                return (
+                  <Image
+                    quality={90}
+                    key={`${f.src}-${f.label}`}
+                    src={f.src}
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    priority={i === cur}
+                    draggable={false}
+                    className={i === cur ? "is-active" : undefined}
+                    style={{ objectPosition: f.position }}
+                  />
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
           <div className="exp-shade" aria-hidden="true" />
         </div>
 
@@ -197,7 +233,7 @@ export default function Experience360() {
         <div className="exp-controls">
           <div className="exp-control is-static">
             <Mouse size={22} strokeWidth={1} aria-hidden="true" />
-            <span>Drag to rotate</span>
+            <span>Drag to explore</span>
           </div>
           <button
             type="button"

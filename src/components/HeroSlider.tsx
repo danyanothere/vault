@@ -1,20 +1,54 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { animate, stagger } from "motion";
 import { vehicles } from "@/data/vehicles";
+import { easeLuxury, INTRO_DONE_EVENT } from "@/lib/motion";
 import Button from "./Button";
 import VehicleSelector from "./VehicleSelector";
 import WatchVideo from "./WatchVideo";
+import ViewportVideo from "./motion/ViewportVideo";
 
 export default function HeroSlider() {
   const [active, setActive] = useState(0);
   const v = vehicles[active];
   const total = String(vehicles.length).padStart(2, "0");
   const step = useCallback((d: number) => setActive((a) => (a + d + vehicles.length) % vehicles.length), []);
+  const reduce = useReducedMotion();
+  const root = useRef<HTMLElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+
+  // Intro → hero handoff: the loader's video slit becomes this media area,
+  // then the copy rises out of its masks.
+  useEffect(() => {
+    const onDone = (e: Event) => {
+      const t = (e as CustomEvent<{ time?: number }>).detail?.time;
+      if (video.current && typeof t === "number") {
+        try {
+          video.current.currentTime = t;
+        } catch {
+          // metadata not ready yet; playback continues from 0
+        }
+      }
+      const el = root.current;
+      if (!el) return;
+      const masks = el.querySelectorAll<HTMLElement>("[data-reveal-mask]");
+      const fades = el.querySelectorAll<HTMLElement>("[data-reveal-fade]");
+      animate(masks, { transform: ["translateY(105%)", "translateY(0%)"] }, { duration: 0.9, ease: easeLuxury, delay: stagger(0.12) });
+      animate(fades, { opacity: [0, 1], transform: ["translateY(14px)", "translateY(0px)"] }, { duration: 0.7, ease: easeLuxury, delay: stagger(0.08, { startDelay: 0.35 }) }).then(() =>
+        document.documentElement.classList.remove("intro-play"),
+      );
+    };
+    window.addEventListener(INTRO_DONE_EVENT, onDone);
+    return () => window.removeEventListener(INTRO_DONE_EVENT, onDone);
+  }, []);
+
+  const fade = reduce ? 0.2 : undefined;
 
   return (
     <section
+      ref={root}
       className="hero"
       aria-roledescription="carousel"
       aria-label="Featured automobiles"
@@ -24,36 +58,49 @@ export default function HeroSlider() {
       }}
     >
       <div className="hero-media" aria-hidden="true">
-        {vehicles.map((item, i) => (
-          <Image quality={90}
-            key={item.id}
-            src={item.hero.src}
-            alt=""
-            fill
-            priority={i === 0}
-            sizes="100vw"
-            className={`hero-img ${i === active ? "is-active" : ""}`}
-            style={{ objectPosition: item.hero.position }}
-          />
-        ))}
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={v.id}
+            className="hero-media-layer"
+            initial={{ opacity: 0, scale: reduce ? 1 : 1.03 }}
+            animate={{ opacity: 1, scale: 1, transition: { duration: fade ?? 0.6, delay: reduce ? 0 : 0.15, ease: easeLuxury } }}
+            exit={{ opacity: 0, scale: reduce ? 1 : 0.985, transition: { duration: fade ?? 0.35, ease: easeLuxury } }}
+          >
+            <ViewportVideo ref={video} eager src={v.video.src} poster={v.video.poster} className="hero-video" />
+          </motion.div>
+        </AnimatePresence>
+        <motion.div
+          className="hero-ambient"
+          animate={{ background: `radial-gradient(ellipse 60% 70% at 62% 58%, rgba(${v.ambient}, 0.07), rgba(${v.ambient}, 0) 70%)` }}
+          transition={{ duration: 0.8, ease: easeLuxury }}
+        />
         <div className="hero-shade" />
       </div>
 
       <div className="hero-inner">
         <div className="hero-copy">
-          <p className="eyebrow eyebrow-after">Exceptional automobiles</p>
+          <p className="eyebrow eyebrow-after" data-reveal-fade>
+            Exceptional automobiles
+          </p>
           <h1 className="hero-title">
-            Rare cars.
-            <br />
-            <span className="dim">Private access.</span>
+            <span className="rv-mask">
+              <span className="rv-inner" data-reveal-mask>
+                Rare cars.
+              </span>
+            </span>
+            <span className="rv-mask">
+              <span className="rv-inner dim" data-reveal-mask>
+                Private access.
+              </span>
+            </span>
           </h1>
-          <p className="hero-sub">
+          <p className="hero-sub" data-reveal-fade>
             A curated collection of exceptional automobiles,{" "}
             <br />
             available by private enquiry.
           </p>
-          <div className="hero-ctas">
-            <Button href="/contact" arrow>
+          <div className="hero-ctas" data-reveal-fade>
+            <Button href="/contact" arrow magnetic>
               Request a private viewing
             </Button>
             <div className="hero-ctas-row">
@@ -64,38 +111,68 @@ export default function HeroSlider() {
             </div>
           </div>
 
-          <div className="hero-vehicle" key={v.id} aria-live="polite">
-            <p className="hero-count">
-              {v.index} / {total}
-              <span className="count-line" aria-hidden="true" />
-            </p>
-            <h2 className="hero-vehicle-name">
-              <span>{v.brand}</span>
-              <span className="dim">{v.modelLines[0]}</span>
-            </h2>
-            <p className="hero-vehicle-cat">{v.subtitle}</p>
-            <p className="hero-pillars">
-              {v.tags.map((p, i) => (
-                <span key={p}>
-                  {i > 0 && <i aria-hidden="true">|</i>}
-                  {p}
-                </span>
-              ))}
-            </p>
+          <div className="hero-vehicle" data-reveal-fade aria-live="polite">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={v.id}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, y: reduce ? 0 : -12, transition: { duration: fade ?? 0.15, ease: easeLuxury } }}
+                variants={{ show: { transition: { staggerChildren: reduce ? 0 : 0.06, delayChildren: reduce ? 0 : 0.3 } } }}
+              >
+                {[
+                  <p className="hero-count" key="c">
+                    {v.index} / {total}
+                    <span className="count-line" aria-hidden="true" />
+                  </p>,
+                  <h2 className="hero-vehicle-name" key="n">
+                    <span>{v.brand}</span>
+                    <span className="dim">{v.modelLines[0]}</span>
+                  </h2>,
+                  <p className="hero-vehicle-cat" key="s">
+                    {v.subtitle}
+                  </p>,
+                  <p className="hero-pillars" key="p">
+                    {v.tags.map((p, i) => (
+                      <span key={p}>
+                        {i > 0 && <i aria-hidden="true">|</i>}
+                        {p}
+                      </span>
+                    ))}
+                  </p>,
+                ].map((child) => (
+                  <motion.div
+                    key={child.key}
+                    variants={{
+                      hidden: { opacity: 0, y: reduce ? 0 : 14 },
+                      show: { opacity: 1, y: 0, transition: { duration: fade ?? 0.45, ease: easeLuxury } },
+                    }}
+                  >
+                    {child}
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
-        <ol className="hero-dots" aria-label="Slides">
+        <ol className="hero-dots" aria-label="Slides" data-reveal-fade>
           {vehicles.map((item, i) => (
             <li key={item.id}>
-              <button type="button" className={i === active ? "active" : undefined} aria-label={`Show ${item.brand} ${item.modelLines.join(" ")}`} aria-current={i === active} onClick={() => setActive(i)}>
+              <button
+                type="button"
+                className={i === active ? "active" : undefined}
+                aria-label={`Show ${item.brand} ${item.modelLines.join(" ")}`}
+                aria-current={i === active}
+                onClick={() => setActive(i)}
+              >
                 {item.index}
               </button>
             </li>
           ))}
         </ol>
 
-        <a href="#home-next" className="scroll-cue">
+        <a href="#home-next" className="scroll-cue" data-reveal-fade>
           <span>Scroll</span>
           <svg width="10" height="44" viewBox="0 0 10 44" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
             <path d="M5 0v42M1 38l4 4 4-4" />

@@ -59,7 +59,7 @@ export default function Header() {
             <Phone size={17} strokeWidth={2} />
           </a>
           <span className="v-sep" aria-hidden="true" />
-          <Link href="/contact" className="btn btn-outline btn-sm header-cta">
+          <Link href="/contact" className="btn btn-outline btn-sm header-cta" data-magnetic>
             <span>{t("requestAccess")}</span>
             <Arrow />
           </Link>

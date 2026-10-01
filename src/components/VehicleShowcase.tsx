@@ -13,7 +13,7 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
   const multi = vehicle.modelLines.length > 1;
   return (
     <section id={vehicle.id} className="showcase" aria-labelledby={`sc-${vehicle.id}`}>
-      <div className="showcase-media">
+      <div className="showcase-media" data-cursor="explore">
         <Image quality={90} src={vehicle.showcase.src} alt={vehicle.showcase.alt} fill sizes="(max-width: 900px) 100vw, 70vw" priority={priority} style={{ objectPosition: vehicle.showcase.position }} />
         <div className="showcase-shade" aria-hidden="true" />
       </div>
@@ -50,7 +50,7 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
           ))}
         </p>
         <div className="showcase-actions">
-          <Button href="/contact" arrow>
+          <Button href="/contact" arrow magnetic>
             Request a private viewing
           </Button>
           <WatchVideo title={`${vehicle.brand} ${vehicle.modelLines.join(" ")}`} poster={vehicle.video.poster} src={vehicle.video.src} />

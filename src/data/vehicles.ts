@@ -22,11 +22,14 @@ export type Vehicle = {
   thumbnail: Img;
   gallery: Partial<Record<GalleryCategory, Img[]>>;
   video: { src: string; poster: string };
+  /** Barely-visible tint behind the vehicle (rgb triplet). */
+  ambient: string;
 };
 
 export const vehicles: Vehicle[] = [
   {
     id: "maserati-quattroporte",
+    ambient: "214, 150, 70",
     video: { src: "/videos/maserati.mp4", poster: "/videos/maserati-poster.webp" },
     index: "01",
     brand: "Maserati",
@@ -58,6 +61,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "brabus-gls",
+    ambient: "200, 190, 175",
     video: { src: "/videos/brabus.mp4", poster: "/videos/brabus-poster.webp" },
     index: "02",
     brand: "Brabus",
@@ -85,6 +89,7 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "porsche-911-turbo",
+    ambient: "190, 60, 50",
     video: { src: "/videos/porsche.mp4", poster: "/videos/porsche-poster.webp" },
     index: "03",
     brand: "Porsche",

@@ -102,7 +102,7 @@ export default function VehicleDetail({ id }: { id: string }) {
 
       <div className="gallery" role="group" aria-label="Gallery">
         {items.map((item, i) => (
-          <button key={item.label} type="button" className={i === active ? "active" : undefined} aria-pressed={i === active} onClick={() => setActive(i)}>
+          <button key={item.label} type="button" data-cursor="view" className={i === active ? "active" : undefined} aria-pressed={i === active} onClick={() => setActive(i)}>
             <span className="gallery-thumb">
               <Image quality={90} src={item.img.src} alt="" fill sizes="(max-width: 700px) 132px, 14vw" style={{ objectPosition: item.img.position }} />
             </span>

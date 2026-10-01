@@ -31,7 +31,7 @@ export default function WatchVideo({ label = "Watch video", title, poster, poste
 
   return (
     <>
-      <button type="button" className={`btn btn-ghost btn-play ${className}`.trim()} onClick={open}>
+      <button type="button" data-cursor="play" className={`btn btn-ghost btn-play ${className}`.trim()} onClick={open}>
         <span className="btn-icon btn-icon-lg">
           <Play size={13} strokeWidth={1.4} />
         </span>

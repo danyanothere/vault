@@ -6,9 +6,9 @@ import Arrow from "./Arrow";
 
 export default function VehicleSelector({ active, onSelect }: { active: number; onSelect: (i: number) => void }) {
   return (
-    <div className="selector" role="group" aria-label="Select vehicle">
+    <div className="selector" role="group" aria-label="Select vehicle" data-reveal-fade>
       {vehicles.map((v, i) => (
-        <button key={v.id} type="button" className={`selector-card ${i === active ? "active" : ""}`} aria-pressed={i === active} onClick={() => onSelect(i)}>
+        <button key={v.id} type="button" data-cursor="view" className={`selector-card ${i === active ? "active" : ""}`} aria-pressed={i === active} onClick={() => onSelect(i)}>
           <span className="selector-num">{v.index}</span>
           <span className="selector-thumb">
             <Image src={v.thumbnail.src} alt="" fill quality={90} sizes="(max-width: 900px) 260px, 24vw" style={{ objectPosition: v.thumbnail.position }} />
