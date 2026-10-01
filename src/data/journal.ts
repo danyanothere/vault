@@ -7,7 +7,7 @@ export const journal: Post[] = [
     date: "Sep 12, 2026",
     category: "Heritage",
     excerpt: "Six generations of the four-door that taught Italy how to travel quickly, and in comfort.",
-    image: "/images/journal/journal-1.webp",
+    image: "/images/hero/maserati-showroom.webp",
   },
   {
     slug: "inspect-porsche-911",
@@ -15,7 +15,7 @@ export const journal: Post[] = [
     date: "Sep 5, 2026",
     category: "Guidance",
     excerpt: "Bore scoring, service records and the questions a seller should never avoid.",
-    image: "/images/journal/journal-2.webp",
+    image: "/images/vehicles/porsche/porsche-911-cabriolet.webp",
   },
   {
     slug: "performance-suv-values",
@@ -23,7 +23,7 @@ export const journal: Post[] = [
     date: "Aug 28, 2026",
     category: "Market",
     excerpt: "Why limited-run SUVs are quietly outperforming the coupés they share engines with.",
-    image: "/images/journal/journal-3.webp",
+    image: "/images/vehicles/brabus/brabus-gls-showroom.webp",
   },
   {
     slug: "private-auction-guide",

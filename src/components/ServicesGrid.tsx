@@ -3,9 +3,9 @@ import Link from "next/link";
 import Arrow from "./Arrow";
 
 const services = [
-  { n: "01", title: "Private sales", text: "We help you sell your vehicle to the right buyer, with targeted marketing and a private network.", img: "/images/services/sedan-front.webp", href: "/sell" },
-  { n: "02", title: "Vehicle sourcing", text: "Looking for a specific model? We find exceptional cars locally and internationally.", img: "/images/services/steering-wheel.webp", href: "/contact?interest=sourcing" },
-  { n: "03", title: "Inspection & advice", text: "Independent evaluation, condition reports and expert guidance.", img: "/images/services/wheel-caliper.webp", href: "/contact" },
+  { n: "01", title: "Private sales", text: "We help you sell your vehicle to the right buyer, with targeted marketing and a private network.", img: "/images/experience/details/grille.webp", href: "/sell" },
+  { n: "02", title: "Vehicle sourcing", text: "Looking for a specific model? We find exceptional cars locally and internationally.", img: "/images/experience/interior/steering-wheel.webp", href: "/contact?interest=sourcing" },
+  { n: "03", title: "Inspection & advice", text: "Independent evaluation, condition reports and expert guidance.", img: "/images/experience/details/wheel-caliper.webp", href: "/contact" },
   { n: "04", title: "Concierge services", text: "Documentation, transport, registration, insurance, detailing and full logistical support.", img: "/images/services/brabus-rear.webp", href: "/contact" },
 ];
 

@@ -61,7 +61,7 @@ export default function AboutPage() {
 
       <section id="story" className="story" aria-labelledby="story-title">
         <div className="story-img">
-          <Image quality={90} src="/images/about/leather-seat.webp" alt="Quilted leather seat with Trident emblem" fill sizes="(max-width: 900px) 100vw, 36vw" style={{ objectPosition: "50% 35%" }} />
+          <Image quality={90} src="/images/experience/interior/driver-seat.webp" alt="Quilted leather seat with Trident emblem" fill sizes="(max-width: 900px) 100vw, 36vw" style={{ objectPosition: "65% 50%" }} />
         </div>
         <div className="story-center">
           <p className="eyebrow eyebrow-after">Our story</p>
@@ -112,7 +112,7 @@ export default function AboutPage() {
 
       <section className="why" aria-labelledby="why-title">
         <div className="why-media">
-          <Image quality={90} src="/images/about/showroom.webp" alt="Glass showroom with several luxury automobiles" fill sizes="(max-width: 900px) 100vw, 62vw" style={{ objectPosition: "30% 60%" }} />
+          <Image quality={90} src="/images/about/showroom.webp" alt="Glass showroom with several luxury automobiles" fill sizes="(max-width: 900px) 100vw, 62vw" style={{ objectPosition: "60% 55%" }} />
           <div className="why-overlay">
             <p className="eyebrow eyebrow-after">Why VAULT</p>
             <h2 id="why-title" className="title-lg">
