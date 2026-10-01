@@ -44,11 +44,11 @@ export const maseratiExperience: ExperienceSet = {
     { src: int("rear-seats"), label: "Rear seats" },
   ],
   details: [
-    { src: det("wheel-caliper"), label: "Forged wheel · red caliper" },
-    { src: det("headlight"), label: "Adaptive LED headlight" },
-    { src: det("grille"), label: "Trident grille" },
-    { src: det("rear-light"), label: "Boomerang tail light" },
-    { src: det("engine"), label: "Twin-turbo V6" },
+    { src: det("wheel-caliper"), label: "Alloy wheel · performance brakes" },
+    { src: det("headlight"), label: "LED headlight" },
+    { src: det("grille"), label: "Signature trident grille" },
+    { src: det("rear-light"), label: "Tail light" },
+    { src: det("engine"), label: "V6 powertrain" },
     { src: det("trim"), label: "Illuminated sill" },
   ],
 };

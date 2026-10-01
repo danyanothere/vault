@@ -26,8 +26,8 @@ export default function HeroSlider() {
       if (!el) return;
       const masks = el.querySelectorAll<HTMLElement>("[data-reveal-mask]");
       const fades = el.querySelectorAll<HTMLElement>("[data-reveal-fade]");
-      animate(masks, { transform: ["translateY(105%)", "translateY(0%)"] }, { duration: 0.9, ease: easeLuxury, delay: stagger(0.12) });
-      animate(fades, { opacity: [0, 1], transform: ["translateY(14px)", "translateY(0px)"] }, { duration: 0.7, ease: easeLuxury, delay: stagger(0.08, { startDelay: 0.35 }) }).then(() =>
+      animate(masks, { transform: ["translateY(105%)", "translateY(0%)"] }, { duration: 0.85, ease: easeLuxury, delay: stagger(0.13, { startDelay: 0.06 }) });
+      animate(fades, { opacity: [0, 1], transform: ["translateY(14px)", "translateY(0px)"] }, { duration: 0.65, ease: easeLuxury, delay: stagger(0.06, { startDelay: 0.32 }) }).then(() =>
         document.documentElement.classList.remove("intro-play"),
       );
     };
@@ -53,9 +53,9 @@ export default function HeroSlider() {
           <motion.div
             key={v.id}
             className="hero-media-layer"
-            initial={{ opacity: 0, scale: reduce ? 1 : 1.03 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: fade ?? 0.6, delay: reduce ? 0 : 0.15, ease: easeLuxury } }}
-            exit={{ opacity: 0, scale: reduce ? 1 : 0.985, transition: { duration: fade ?? 0.35, ease: easeLuxury } }}
+            initial={{ opacity: 0, scale: reduce ? 1 : 0.985 }}
+            animate={{ opacity: 1, scale: 1, transition: { duration: fade ?? 0.55, delay: reduce ? 0 : 0.15, ease: easeLuxury } }}
+            exit={{ opacity: 0, scale: reduce ? 1 : 1.015, transition: { duration: fade ?? 0.45, delay: reduce ? 0 : 0.1, ease: easeLuxury } }}
           >
             <Image
               quality={90}
@@ -118,7 +118,7 @@ export default function HeroSlider() {
                 initial="hidden"
                 animate="show"
                 exit={{ opacity: 0, y: reduce ? 0 : -12, transition: { duration: fade ?? 0.15, ease: easeLuxury } }}
-                variants={{ show: { transition: { staggerChildren: reduce ? 0 : 0.06, delayChildren: reduce ? 0 : 0.3 } } }}
+                variants={{ show: { transition: { staggerChildren: reduce ? 0 : 0.06, delayChildren: reduce ? 0 : 0.45 } } }}
               >
                 {[
                   <p className="hero-count" key="c">

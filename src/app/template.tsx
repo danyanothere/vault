@@ -47,24 +47,25 @@ export default function Template({ children }: { children: React.ReactNode }) {
         <motion.div
           className="route-curtain"
           aria-hidden="true"
-          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          animate={{ clipPath: reduce ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", opacity: reduce ? 0 : 1 }}
-          transition={{ duration: reduce ? 0.2 : 0.55, delay: reduce ? 0 : 0.18, ease: easeLuxury }}
+          initial={{ y: "0%", opacity: 1 }}
+          animate={reduce ? { opacity: 0 } : { y: "-100%" }}
+          transition={{ duration: reduce ? 0.2 : 0.45, delay: reduce ? 0 : 0.2, ease: easeLuxury }}
         >
           <motion.span
-            className="route-curtain-line"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.35, ease: easeLuxury }}
-          />
-          <motion.span
             className="route-curtain-title"
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, ease: easeLuxury }}
+            transition={{ duration: 0.2, ease: easeLuxury }}
           >
             {titleFor(pathname)}
           </motion.span>
+          {/* lime edge that travels with the lifting curtain */}
+          <motion.span
+            className="route-curtain-edge"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.3, ease: easeLuxury }}
+          />
         </motion.div>
       )}
       {children}

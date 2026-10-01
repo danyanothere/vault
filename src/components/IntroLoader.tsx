@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { createTimeline, cubicBezier, stagger } from "animejs";
 import { vehicles } from "@/data/vehicles";
@@ -12,7 +11,7 @@ const hero = vehicles[0];
 
 /**
  * Cinematic boot. Anime.js drives the whole timeline:
- * logo → progress → a thin video slit → the slit expands into the
+ * logo → progress → a thin slit → two black panels part to reveal the
  * homepage hero media, where the real hero video takes over.
  *
  * The inline script in layout.tsx sets `intro-seen` (skip) or `intro-play`
@@ -22,15 +21,14 @@ export default function IntroLoader() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const root = useRef<HTMLDivElement>(null);
-  const bg = useRef<HTMLDivElement>(null);
+  const top = useRef<HTMLDivElement>(null);
+  const bottom = useRef<HTMLDivElement>(null);
   const letters = useRef<HTMLSpanElement>(null);
   const logo = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
   const pct = useRef<HTMLSpanElement>(null);
   const label = useRef<HTMLParagraphElement>(null);
   const meta = useRef<HTMLDivElement>(null);
-  const slit = useRef<HTMLDivElement>(null);
-  const photo = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -50,23 +48,16 @@ export default function IntroLoader() {
 
     const mobile = window.innerWidth < 700;
     const k = mobile ? 0.72 : 1; // shorter choreography on phones
-    const W = window.innerWidth;
     const H = window.innerHeight;
 
-    // Target rectangle: the hero media area if this page has one, else the full screen.
+    // The slit opens on the horizon of the hero media (or the screen centre on other pages).
+    // The page itself sits underneath in its final layout: only two black panels move,
+    // so the media geometry never jumps.
     const target = document.querySelector<HTMLElement>(".hero-media")?.getBoundingClientRect();
-    const box = target && target.height > 0 ? { x: target.left, y: target.top, w: target.width, h: target.height } : { x: 0, y: 0, w: W, h: H };
-    if (photo.current) {
-      Object.assign(photo.current.style, { left: `${box.x}px`, top: `${box.y}px`, width: `${box.w}px`, height: `${box.h}px` });
-    }
+    const midY = target && target.height > 0 ? target.top + target.height / 2 : H / 2;
+    if (top.current) top.current.style.height = `${midY}px`;
+    if (bottom.current) bottom.current.style.top = `${midY}px`;
 
-    // Clip expressed as insets (px) of the full-screen slit layer.
-    const clip = { t: H / 2, b: H / 2, l: box.x, r: W - box.x - box.w };
-    const paint = () => {
-      if (slit.current) slit.current.style.clipPath = `inset(${clip.t}px ${clip.r}px ${clip.b}px ${clip.l}px)`;
-    };
-    paint();
-    const midY = box.y + box.h / 2;
     const progress = { v: 0 };
     const showProgress = () => {
       if (bar.current) bar.current.style.transform = `scaleX(${Math.max(progress.v, 2) / 100})`;
@@ -89,16 +80,17 @@ export default function IntroLoader() {
       .call(() => setStep(2), 1150 * k)
       .add(logo.current!, { opacity: [1, 0], translateY: [0, -12], duration: 350 * k }, 1150 * k)
       .add(label.current!, { opacity: [0, 1], translateY: [8, 0], duration: 400 * k }, 1250 * k)
-      .add(clip, { t: midY - 2, b: H - midY - 2, duration: 350 * k, onUpdate: paint }, 1250 * k)
+      .add(top.current!, { translateY: [0, -2], duration: 350 * k }, 1250 * k)
+      .add(bottom.current!, { translateY: [0, 2], duration: 350 * k }, 1250 * k)
       .add(progress, { v: 100, duration: 400 * k, onUpdate: showProgress }, 1250 * k)
       .call(() => setStep(3), 1650 * k)
-      .add(meta.current!, { opacity: [1, 0], duration: 300 * k }, 1700 * k)
-      .add(clip, { t: box.y, b: H - box.y - box.h, duration: 650 * k, onUpdate: paint }, 1700 * k)
+      .add(meta.current!, { opacity: [1, 0], duration: 280 * k }, 1650 * k)
+      .add(top.current!, { translateY: -midY, duration: 700 * k }, 1700 * k)
+      .add(bottom.current!, { translateY: H - midY, duration: 700 * k }, 1700 * k)
+      // hand over at ~55% of the opening so the hero copy rises while the curtain is still moving
       .call(() => {
         window.dispatchEvent(new CustomEvent(INTRO_DONE_EVENT));
-      }, 2150 * k)
-      .add(bg.current!, { opacity: [1, 0], duration: 350 * k }, 2250 * k)
-      .add(slit.current!, { opacity: [1, 0], duration: 250 * k }, 2400 * k);
+      }, 2080 * k);
 
     return () => {
       tl.pause();
@@ -109,12 +101,8 @@ export default function IntroLoader() {
 
   return (
     <div ref={root} className="intro" aria-hidden="true">
-      <div ref={bg} className="intro-bg" />
-      <div ref={slit} className="intro-slit">
-        <div ref={photo} className="intro-photo">
-          <Image quality={90} src={hero.hero.src} alt="" fill priority sizes="(max-width: 900px) 100vw, 72vw" style={{ objectPosition: hero.hero.position }} />
-        </div>
-      </div>
+      <div ref={top} className="intro-panel intro-panel-top" />
+      <div ref={bottom} className="intro-panel intro-panel-bottom" />
 
       <div ref={meta} className="intro-meta">
         <div className="intro-step" key={step}>

@@ -9,7 +9,9 @@ import { easeLuxury } from "@/lib/motion";
 
 type Mode = "exterior" | "interior" | "details";
 const modes: Mode[] = ["exterior", "interior", "details"];
-const STEP_PX = 60; // horizontal drag distance per frame (use ~12px for a 36-frame turntable)
+// Horizontal drag per frame. 8 frames cover a full orbit (45° each), so one step needs a deliberate
+// ~45px; scale it down (12–20px) if the ring grows to 18–36 frames.
+const STEP_PX = 45;
 
 export default function Experience360() {
   const [mode, setMode] = useState<Mode>("exterior");
@@ -174,7 +176,7 @@ export default function Experience360() {
               {frames.map((f, i) => {
                 const cur = ((frame % count) + count) % count;
                 const dist = Math.min(Math.abs(i - cur), count - Math.abs(i - cur));
-                if (dist > 2) return null;
+                if (dist > 3) return null;
                 return (
                   <Image
                     quality={90}

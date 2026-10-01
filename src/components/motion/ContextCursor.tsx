@@ -13,6 +13,7 @@ type Label = "drag" | "view" | "play" | "explore";
 export default function ContextCursor() {
   const [enabled, setEnabled] = useState(false);
   const [label, setLabel] = useState<Label | null>(null);
+  const [pressed, setPressed] = useState(false);
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
   const sx = useSpring(x, { stiffness: 700, damping: 45, mass: 0.4 });
@@ -53,9 +54,9 @@ export default function ContextCursor() {
       if (m) {
         magnet = m;
         const r = m.getBoundingClientRect();
-        const dx = ((e.clientX - (r.left + r.width / 2)) / r.width) * 10;
+        const dx = ((e.clientX - (r.left + r.width / 2)) / r.width) * 9;
         const dy = ((e.clientY - (r.top + r.height / 2)) / r.height) * 8;
-        m.style.transform = `translate(${Math.max(-5, Math.min(5, dx))}px, ${Math.max(-4, Math.min(4, dy))}px)`;
+        m.style.transform = `translate(${Math.max(-4.5, Math.min(4.5, dx))}px, ${Math.max(-3.5, Math.min(3.5, dy))}px)`;
       }
     };
 
@@ -75,11 +76,18 @@ export default function ContextCursor() {
       release();
     };
 
+    const onDown = (e: PointerEvent) => e.pointerType === "mouse" && setPressed(true);
+    const onUp = () => setPressed(false);
+
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("pointerleave", onLeave);
       if (raf) cancelAnimationFrame(raf);
@@ -93,9 +101,9 @@ export default function ContextCursor() {
   return (
     <motion.div className="ctx-cursor" style={{ x: sx, y: sy }} aria-hidden="true">
       <motion.span
-        className={`ctx-cursor-dot ${label === "play" ? "is-fill" : ""}`}
-        animate={{ scale: label ? 1 : 0, opacity: label ? 1 : 0 }}
-        transition={{ type: "spring", stiffness: 500, damping: 34 }}
+        className={`ctx-cursor-dot ${pressed ? "is-pressed" : ""}`}
+        animate={{ scale: label ? (pressed ? 0.92 : 1) : 0.6, opacity: label ? 1 : 0 }}
+        transition={{ type: "spring", stiffness: 600, damping: 38 }}
       >
         {label}
       </motion.span>
