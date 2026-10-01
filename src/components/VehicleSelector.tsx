@@ -11,7 +11,7 @@ export default function VehicleSelector({ active, onSelect }: { active: number; 
         <button key={v.id} type="button" className={`selector-card ${i === active ? "active" : ""}`} aria-pressed={i === active} onClick={() => onSelect(i)}>
           <span className="selector-num">{v.index}</span>
           <span className="selector-thumb">
-            <Image src={v.thumbnail.src} alt="" fill sizes="220px" style={{ objectPosition: v.thumbnail.position }} />
+            <Image src={v.thumbnail.src} alt="" fill quality={90} sizes="(max-width: 900px) 260px, 24vw" style={{ objectPosition: v.thumbnail.position }} />
           </span>
           <span className="selector-name">
             <span>{v.brand}</span>

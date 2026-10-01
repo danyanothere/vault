@@ -16,7 +16,7 @@ export default function ServicesGrid() {
         <li key={s.n}>
           <Link href={s.href} className="service-card">
             <span className="service-img">
-              <Image src={s.img} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw" />
+              <Image src={s.img} alt="" fill quality={90} sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw" />
             </span>
             <span className="service-body">
               <span className="service-num">{s.n}</span>

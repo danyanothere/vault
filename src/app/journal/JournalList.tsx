@@ -26,7 +26,7 @@ export default function JournalList() {
           <li key={post.slug}>
             <article className="journal-card">
               <div className="journal-img">
-                <Image src={post.image} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" style={{ objectPosition: post.position }} />
+                <Image src={post.image} alt="" fill quality={90} sizes="(max-width: 640px) 100vw, 33vw" style={{ objectPosition: post.position }} />
               </div>
               <div className="journal-body">
                 <p className="journal-meta">{post.category}</p>

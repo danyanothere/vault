@@ -44,7 +44,7 @@ export const vehicles: Vehicle[] = [
     ],
     hero: { src: "/images/hero/maserati-showroom.webp", position: "62% 55%", alt: "Black Maserati Quattroporte in a private showroom" },
     showcase: { src: "/images/hero/maserati-showroom.webp", position: "70% 55%", alt: "Black Maserati Quattroporte" },
-    thumbnail: { src: "/images/hero/maserati-showroom.webp", position: "78% 62%", alt: "" },
+    thumbnail: { src: "/images/hero/maserati-showroom.webp", position: "72% 60%", alt: "" },
     gallery: {
       exterior: [{ src: "/images/experience/exterior/frame-02.webp", position: "50% 55%", alt: "Maserati Quattroporte, front three-quarter" }],
       interior: [{ src: "/images/experience/interior/driver-seat.webp", position: "50% 50%", alt: "Beige quilted leather driver seat" }],
@@ -74,7 +74,7 @@ export const vehicles: Vehicle[] = [
     ],
     hero: { src: "/images/vehicles/brabus/brabus-gls-showroom.webp", position: "55% 55%", alt: "Black Brabus GLS in a showroom" },
     showcase: { src: "/images/vehicles/brabus/brabus-gls-showroom.webp", position: "60% 55%", alt: "Black Brabus GLS" },
-    thumbnail: { src: "/images/vehicles/brabus/brabus-gls-showroom.webp", position: "55% 68%", alt: "" },
+    thumbnail: { src: "/images/vehicles/brabus/brabus-gls-showroom.webp", position: "58% 60%", alt: "" },
     gallery: {
       exterior: [{ src: "/images/vehicles/brabus/brabus-gls-showroom.webp", position: "50% 60%", alt: "Brabus GLS, front three-quarter" }],
       rear: [{ src: "/images/services/brabus-rear.webp", position: "50% 50%", alt: "Brabus rear detail" }],
@@ -100,7 +100,7 @@ export const vehicles: Vehicle[] = [
     ],
     hero: { src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "62% 60%", alt: "Black Porsche 911 Turbo Cabriolet with red roof" },
     showcase: { src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "65% 60%", alt: "Black Porsche 911 Turbo Cabriolet with red roof" },
-    thumbnail: { src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "65% 70%", alt: "" },
+    thumbnail: { src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "65% 62%", alt: "" },
     gallery: {
       exterior: [{ src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "50% 60%", alt: "Porsche 911 Turbo Cabriolet, front three-quarter" }],
       interior: [{ src: "/images/experience/interior/steering-wheel.webp", position: "50% 50%", alt: "Porsche steering wheel" }],
