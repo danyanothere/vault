@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { vehicles } from "@/data/vehicles";
+import { useDict, useVehicles } from "@/i18n/client";
 import Arrow from "./Arrow";
 
 export default function VehicleSelector({ active, onSelect }: { active: number; onSelect: (i: number) => void }) {
+  const vehicles = useVehicles();
+  const dict = useDict();
   return (
-    <div className="selector" role="group" aria-label="Select vehicle" data-reveal-fade>
+    <div className="selector" role="group" aria-label={dict.hero.select} data-reveal-fade>
       {vehicles.map((v, i) => (
         <button key={v.id} type="button" data-cursor="view" className={`selector-card ${i === active ? "active" : ""}`} aria-pressed={i === active} onClick={() => onSelect(i)}>
           <span className="selector-num">{v.index}</span>

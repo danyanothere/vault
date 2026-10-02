@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useDict } from "@/i18n/client";
 
 const OFFSET = (((2 * 24 + 14) * 60 + 37) * 60 + 21) * 1000;
 const KEY = "vault-auction-target";
 const initial = [2, 14, 37, 21];
-const labels = ["Days", "Hours", "Min", "Sec"];
 
 function split(ms: number) {
   const s = Math.max(0, Math.floor(ms / 1000));
@@ -15,6 +15,8 @@ function split(ms: number) {
 export default function Countdown() {
   // Server and first client render share the same static values, so hydration always matches.
   const [parts, setParts] = useState(initial);
+  const t = useDict().auction;
+  const labels = t.units;
 
   useEffect(() => {
     let target = Date.now() + OFFSET;
@@ -31,7 +33,7 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="countdown" role="timer" aria-label="Time until auction">
+    <div className="countdown" role="timer" aria-label={t.timer}>
       {parts.map((p, i) => (
         <div key={labels[i]} className="countdown-box">
           <span className="countdown-num">{String(p).padStart(2, "0")}</span>

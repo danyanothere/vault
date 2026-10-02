@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { animate, stagger } from "motion";
-import { vehicles } from "@/data/vehicles";
+import { useDict, useVehicles } from "@/i18n/client";
 import { easeLuxury, INTRO_DONE_EVENT } from "@/lib/motion";
 import Button from "./Button";
 import VehicleSelector from "./VehicleSelector";
@@ -12,9 +12,13 @@ import WatchVideo from "./WatchVideo";
 
 export default function HeroSlider() {
   const [active, setActive] = useState(0);
+  const vehicles = useVehicles();
+  const dict = useDict();
+  const h = dict.hero;
   const v = vehicles[active];
   const total = String(vehicles.length).padStart(2, "0");
-  const step = useCallback((d: number) => setActive((a) => (a + d + vehicles.length) % vehicles.length), []);
+  const count = vehicles.length;
+  const step = useCallback((d: number) => setActive((a) => (a + d + count) % count), [count]);
   const reduce = useReducedMotion();
   const root = useRef<HTMLElement>(null);
 
@@ -42,7 +46,7 @@ export default function HeroSlider() {
       ref={root}
       className="hero"
       aria-roledescription="carousel"
-      aria-label="Featured automobiles"
+      aria-label={h.carousel}
       onKeyDown={(e) => {
         if (e.key === "ArrowRight") step(1);
         if (e.key === "ArrowLeft") step(-1);
@@ -80,32 +84,32 @@ export default function HeroSlider() {
       <div className="hero-inner">
         <div className="hero-copy">
           <p className="eyebrow eyebrow-after" data-reveal-fade>
-            Exceptional automobiles
+            {h.eyebrow}
           </p>
           <h1 className="hero-title">
             <span className="rv-mask">
               <span className="rv-inner" data-reveal-mask>
-                Rare cars.
+                {h.title[0]}
               </span>
             </span>
             <span className="rv-mask">
               <span className="rv-inner dim" data-reveal-mask>
-                Private access.
+                {h.title[1]}
               </span>
             </span>
           </h1>
           <p className="hero-sub" data-reveal-fade>
-            A curated collection of exceptional automobiles,{" "}
+            {h.sub[0]}{" "}
             <br />
-            available by private enquiry.
+            {h.sub[1]}
           </p>
           <div className="hero-ctas" data-reveal-fade>
             <Button href="/contact" arrow magnetic>
-              Request a private viewing
+              {dict.common.requestViewing}
             </Button>
             <div className="hero-ctas-row">
               <Button href="/collection" variant="ghost">
-                Explore collection
+                {dict.common.exploreCollection}
               </Button>
               <WatchVideo key={v.id} title={`${v.brand} ${v.modelLines.join(" ")}`} poster={v.video.poster} src={v.video.src} />
             </div>
@@ -156,13 +160,13 @@ export default function HeroSlider() {
           </div>
         </div>
 
-        <ol className="hero-dots" aria-label="Slides" data-reveal-fade>
+        <ol className="hero-dots" aria-label={h.slides} data-reveal-fade>
           {vehicles.map((item, i) => (
             <li key={item.id}>
               <button
                 type="button"
                 className={i === active ? "active" : undefined}
-                aria-label={`Show ${item.brand} ${item.modelLines.join(" ")}`}
+                aria-label={`${h.show} ${item.brand} ${item.modelLines.join(" ")}`}
                 aria-current={i === active}
                 onClick={() => setActive(i)}
               >
@@ -173,7 +177,7 @@ export default function HeroSlider() {
         </ol>
 
         <a href="#home-next" className="scroll-cue" data-reveal-fade>
-          <span>Scroll</span>
+          <span>{h.scroll}</span>
           <svg width="10" height="44" viewBox="0 0 10 44" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
             <path d="M5 0v42M1 38l4 4 4-4" />
           </svg>

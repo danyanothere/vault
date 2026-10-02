@@ -1,18 +1,20 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/i18n/client";
 import Logo from "./Logo";
 import { navItems } from "./nav";
-import { LangSwitch, useLang } from "./Language";
+import { LangSwitch } from "./Language";
+import { useDict } from "@/i18n/client";
 import { InstagramIcon, TelegramIcon, YoutubeIcon } from "./Icons";
 
 export default function Footer() {
-  const { t } = useLang();
+  const dict = useDict();
+  const t = (k: keyof typeof dict.nav) => dict.nav[k];
   return (
     <footer className="site-footer">
       <div className="footer-top">
         <Logo />
-        <nav aria-label="Footer" className="footer-nav">
+        <nav aria-label={dict.footer.nav} className="footer-nav">
           {navItems.map((i) => (
             <Link key={i.href} href={i.href}>
               {t(i.key)}
@@ -36,10 +38,10 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2026 VAULT. All rights reserved.</p>
+        <p>{dict.footer.rights}</p>
         <p className="footer-legal">
-          <Link href="/privacy">Privacy Policy</Link>
-          <Link href="/terms">Terms of Service</Link>
+          <Link href="/privacy">{dict.footer.privacy}</Link>
+          <Link href="/terms">{dict.footer.terms}</Link>
         </p>
       </div>
     </footer>

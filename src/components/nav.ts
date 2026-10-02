@@ -1,4 +1,6 @@
-import type { UIKey } from "./Language";
+import type { Dict } from "@/i18n/config";
+
+type UIKey = keyof Dict["nav"];
 
 export const navItems: { href: string; key: UIKey }[] = [
   { href: "/collection", key: "collection" },

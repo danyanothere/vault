@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { Play, X } from "lucide-react";
+import { useDict } from "@/i18n/client";
 
 type Props = {
   label?: string;
@@ -14,7 +15,9 @@ type Props = {
   className?: string;
 };
 
-export default function WatchVideo({ label = "Watch video", title, poster, posterPosition = "50% 50%", src, className = "" }: Props) {
+export default function WatchVideo({ label, title, poster, posterPosition = "50% 50%", src, className = "" }: Props) {
+  const dict = useDict();
+  label ??= dict.common.watchVideo;
   const dialog = useRef<HTMLDialogElement>(null);
   const video = useRef<HTMLVideoElement>(null);
 
@@ -60,11 +63,11 @@ export default function WatchVideo({ label = "Watch video", title, poster, poste
                   <Play size={22} strokeWidth={1.3} />
                 </span>
                 <p className="eyebrow">{title}</p>
-                <p className="video-note">Film coming soon. Request a private viewing to see the car in person.</p>
+                <p className="video-note">{dict.video.soon}</p>
               </div>
             </>
           )}
-          <button type="button" className="icon-circle video-close" aria-label="Close video" onClick={close}>
+          <button type="button" className="icon-circle video-close" aria-label={dict.video.close} onClick={close}>
             <X size={16} strokeWidth={1.3} />
           </button>
         </div>

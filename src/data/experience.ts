@@ -52,3 +52,18 @@ export const maseratiExperience: ExperienceSet = {
     { src: det("trim"), label: "Illuminated sill" },
   ],
 };
+
+/** Same frames, labels in the locale. */
+export function localizeExperience(dict: import("@/i18n/config").Dict): ExperienceSet {
+  const e = dict.experience;
+  const label = (frames: Frame[], names: string[]) => frames.map((f, i) => ({ ...f, label: names[i] ?? f.label }));
+  return {
+    exterior: {
+      closed: label(maseratiExperience.exterior.closed, e.exterior),
+      doorsOpen: label(maseratiExperience.exterior.doorsOpen, [e.doorOpen]),
+      trunkOpen: label(maseratiExperience.exterior.trunkOpen, [e.trunkOpen]),
+    },
+    interior: label(maseratiExperience.interior, e.interior),
+    details: label(maseratiExperience.details, e.details),
+  };
+}

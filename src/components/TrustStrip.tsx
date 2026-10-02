@@ -1,18 +1,14 @@
 import { Gem, KeyRound, ShieldCheck, UserRound, Globe2 } from "lucide-react";
 import BenefitStrip from "./BenefitStrip";
+import { getDict } from "@/i18n/server";
 
-export default function TrustStrip() {
+const icons = [Gem, KeyRound, ShieldCheck, UserRound, Globe2];
+
+export default async function TrustStrip() {
+  const trust = (await getDict()).trust;
   return (
     <div className="container">
-      <BenefitStrip
-        items={[
-          { icon: Gem, title: "Verified automobiles", text: "Full inspection & documentation" },
-          { icon: KeyRound, title: "Transparent history", text: "Verified provenance & service records" },
-          { icon: ShieldCheck, title: "Private transactions", text: "Discreet and secure process" },
-          { icon: UserRound, title: "Personal assistance", text: "Dedicated support for every client" },
-          { icon: Globe2, title: "International delivery", text: "Worldwide delivery options" },
-        ]}
-      />
+      <BenefitStrip items={trust.map(([title, text], i) => ({ icon: icons[i], title, text }))} />
     </div>
   );
 }

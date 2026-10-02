@@ -1,23 +1,30 @@
-import Link from "next/link";
-import type { ReactNode } from "react";
+import Link from "@/i18n/client";
+import { getDict, getLang } from "@/i18n/server";
+import { legal, updatedOn } from "@/i18n/legal";
 
-export type LegalSection = { id: string; title: string; body: ReactNode };
+export default async function LegalPage({ doc }: { doc: "privacy" | "terms" }) {
+  const lang = await getLang();
+  const dict = await getDict();
+  const l = dict.legal;
+  const { intro, sections } = legal[lang][doc];
+  const title = dict.meta[doc][0];
 
-type Props = { eyebrow: string; title: string; updated: string; intro: ReactNode; sections: LegalSection[] };
-
-export default function LegalPage({ eyebrow, title, updated, intro, sections }: Props) {
   return (
     <article className="legal container">
       <header className="legal-head">
-        <p className="eyebrow eyebrow-after">{eyebrow}</p>
+        <p className="eyebrow eyebrow-after">{l.eyebrow}</p>
         <h1 className="title-xl">{title}</h1>
-        <p className="legal-updated">Last updated: {updated}</p>
-        <div className="legal-intro">{intro}</div>
+        <p className="legal-updated">
+          {l.updated}: {updatedOn[lang]}
+        </p>
+        <div className="legal-intro">
+          <p>{intro}</p>
+        </div>
       </header>
 
       <div className="legal-grid">
-        <nav className="legal-toc" aria-label="On this page">
-          <p className="legal-toc-title">On this page</p>
+        <nav className="legal-toc" aria-label={l.onPage}>
+          <p className="legal-toc-title">{l.onPage}</p>
           <ol>
             {sections.map((s, i) => (
               <li key={s.id}>
@@ -37,11 +44,20 @@ export default function LegalPage({ eyebrow, title, updated, intro, sections }: 
                 <span>{String(i + 1).padStart(2, "0")}</span>
                 {s.title}
               </h2>
-              {s.body}
+              {s.paras?.map((p) => (
+                <p key={p.slice(0, 24)}>{p}</p>
+              ))}
+              {s.list && (
+                <ul>
+                  {s.list.map((item) => (
+                    <li key={item.slice(0, 24)}>{item}</li>
+                  ))}
+                </ul>
+              )}
             </section>
           ))}
           <p className="legal-foot">
-            Questions about this document? <Link href="/contact">Contact us</Link> — we reply personally.
+            {l.questions} <Link href="/contact">{l.contactUs}</Link> {l.reply}
           </p>
         </div>
       </div>

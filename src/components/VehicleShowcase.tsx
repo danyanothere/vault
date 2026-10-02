@@ -1,13 +1,18 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/client";
 import type { Vehicle } from "@/data/vehicles";
-import { vehicles } from "@/data/vehicles";
+import { localizeVehicle, vehicles } from "@/data/vehicles";
+import { useDict } from "@/i18n/client";
 import Button from "./Button";
 import WatchVideo from "./WatchVideo";
 
 type Props = { vehicle: Vehicle; priority?: boolean };
 
-export default function VehicleShowcase({ vehicle, priority = false }: Props) {
+export default function VehicleShowcase({ vehicle: raw, priority = false }: Props) {
+  const dict = useDict();
+  const vehicle = localizeVehicle(raw, dict);
   const total = String(vehicles.length).padStart(2, "0");
   const [first, ...rest] = vehicle.modelLines;
   const multi = vehicle.modelLines.length > 1;
@@ -16,7 +21,7 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
       <div className="showcase-media">
         <Image quality={90} src={vehicle.showcase.src} alt={vehicle.showcase.alt} fill sizes="(max-width: 900px) 100vw, 70vw" priority={priority} style={{ objectPosition: vehicle.showcase.position }} />
         <div className="showcase-shade" aria-hidden="true" />
-        <Link href={`/collection/${vehicle.id}`} className="showcase-media-link" data-cursor="explore" aria-label={`View ${vehicle.brand} ${vehicle.modelLines.join(" ")}`} />
+        <Link href={`/collection/${vehicle.id}`} className="showcase-media-link" data-cursor="explore" aria-label={`${dict.common.view} ${vehicle.brand} ${vehicle.modelLines.join(" ")}`} />
       </div>
 
       <div className="showcase-copy">
@@ -52,13 +57,13 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
         </p>
         <div className="showcase-actions">
           <Button href="/contact" arrow magnetic>
-            Request a private viewing
+            {dict.common.requestViewing}
           </Button>
-          <WatchVideo title={`${vehicle.brand} ${vehicle.modelLines.join(" ")}`} poster={vehicle.video.poster} src={vehicle.video.src} />
+          <WatchVideo label={dict.common.watchVideo} title={`${vehicle.brand} ${vehicle.modelLines.join(" ")}`} poster={vehicle.video.poster} src={vehicle.video.src} />
         </div>
       </div>
 
-      <ol className="showcase-dots" aria-label="Collection">
+      <ol className="showcase-dots" aria-label={dict.common.collection}>
         {vehicles.map((v) => (
           <li key={v.id}>
             <Link
@@ -73,7 +78,7 @@ export default function VehicleShowcase({ vehicle, priority = false }: Props) {
         ))}
       </ol>
 
-      <ul className="showcase-specs" aria-label="Key specifications">
+      <ul className="showcase-specs" aria-label={dict.detail.specs}>
         {vehicle.quickSpecs.map((s) => (
           <li key={s}>{s}</li>
         ))}

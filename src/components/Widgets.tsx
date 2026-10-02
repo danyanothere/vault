@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link, { useDict } from "@/i18n/client";
 import { useEffect, useRef, useState } from "react";
 import { Gift, MessageSquare, Phone, X, ArrowRight } from "lucide-react";
 import { PHONE, PHONE_HREF } from "./nav";
@@ -12,6 +12,8 @@ type Panel = "gift" | "chat" | null;
 
 export default function Widgets() {
   const [open, setOpen] = useState<Panel>(null);
+  const dict = useDict();
+  const w = dict.widgets;
   const [giftSeen, setGiftSeen] = useState(true);
   const root = useRef<HTMLDivElement>(null);
 
@@ -54,32 +56,32 @@ export default function Widgets() {
   return (
     <div ref={root} className={`widgets ${open ? "has-open" : ""}`}>
       {open === "gift" && (
-        <div className="widget-panel" role="dialog" aria-label="Private offer">
-          <button type="button" className="widget-close" aria-label="Close" onClick={() => setOpen(null)}>
+        <div className="widget-panel" role="dialog" aria-label={w.offer}>
+          <button type="button" className="widget-close" aria-label={dict.common.close} onClick={() => setOpen(null)}>
             <X size={14} strokeWidth={1.5} />
           </button>
-          <p className="widget-eyebrow">Private offer</p>
-          <h2 className="widget-title">Complimentary inspection</h2>
+          <p className="widget-eyebrow">{w.offer}</p>
+          <h2 className="widget-title">{w.offerTitle}</h2>
           <p className="widget-text">
-            Book a private viewing this month and receive an independent pre-purchase inspection report — on us.
+            {w.offerText}
           </p>
           <Link href="/contact?interest=specific" className="btn btn-primary btn-sm widget-cta" onClick={() => setOpen(null)}>
-            <span>Claim the offer</span>
+            <span>{w.claim}</span>
             <ArrowRight size={13} strokeWidth={1.6} />
           </Link>
         </div>
       )}
 
       {open === "chat" && (
-        <div className="widget-panel" role="dialog" aria-label="Contact a concierge">
-          <button type="button" className="widget-close" aria-label="Close" onClick={() => setOpen(null)}>
+        <div className="widget-panel" role="dialog" aria-label={w.chat}>
+          <button type="button" className="widget-close" aria-label={dict.common.close} onClick={() => setOpen(null)}>
             <X size={14} strokeWidth={1.5} />
           </button>
           <p className="widget-eyebrow">
-            <span className="widget-online" aria-hidden="true" /> Concierge online
+            <span className="widget-online" aria-hidden="true" /> {w.online}
           </p>
-          <h2 className="widget-title">How can we help?</h2>
-          <p className="widget-text">A member of our team usually replies within 15 minutes.</p>
+          <h2 className="widget-title">{w.help}</h2>
+          <p className="widget-text">{w.reply}</p>
           <ul className="widget-actions">
             <li>
               <a href={WHATSAPP} target="_blank" rel="noreferrer">
@@ -93,7 +95,7 @@ export default function Widgets() {
             </li>
             <li>
               <Link href="/contact" onClick={() => setOpen(null)}>
-                <ArrowRight size={15} strokeWidth={1.4} /> Request access
+                <ArrowRight size={15} strokeWidth={1.4} /> {dict.common.requestAccess}
               </Link>
             </li>
           </ul>
@@ -103,7 +105,7 @@ export default function Widgets() {
       <button
         type="button"
         className={`widget widget-gift ${open === "gift" ? "is-open" : ""}`}
-        aria-label={giftSeen ? "Private offer" : "Private offer, 1 new"}
+        aria-label={giftSeen ? w.offer : w.offerNew}
         aria-expanded={open === "gift"}
         onClick={() => toggle("gift")}
       >
@@ -114,7 +116,7 @@ export default function Widgets() {
       <button
         type="button"
         className={`widget widget-chat ${open === "chat" ? "is-open" : ""}`}
-        aria-label="Chat with a concierge"
+        aria-label={w.chat}
         aria-expanded={open === "chat"}
         onClick={() => toggle("chat")}
       >

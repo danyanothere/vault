@@ -52,3 +52,10 @@ export const journal: Post[] = [
     position: "50% 70%",
   },
 ];
+
+/** Posts with the locale's category, title, excerpt and date. */
+export const localizeJournal = (dict: import("@/i18n/config").Dict): Post[] =>
+  journal.map((p, i) => {
+    const [category, title, excerpt, date] = dict.journal.posts[i] ?? [p.category, p.title, p.excerpt, p.date];
+    return { ...p, category, title, excerpt, date };
+  });

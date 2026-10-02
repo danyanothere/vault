@@ -1,15 +1,19 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import Link, { useDict } from "@/i18n/client";
 import Arrow from "./Arrow";
 
-const services = [
-  { n: "01", title: "Private sales", text: "We help you sell your vehicle to the right buyer, with targeted marketing and a private network.", img: "/images/experience/details/grille.webp", href: "/sell" },
-  { n: "02", title: "Vehicle sourcing", text: "Looking for a specific model? We find exceptional cars locally and internationally.", img: "/images/experience/interior/steering-wheel.webp", href: "/contact?interest=sourcing" },
-  { n: "03", title: "Inspection & advice", text: "Independent evaluation, condition reports and expert guidance.", img: "/images/experience/details/wheel-caliper.webp", href: "/contact" },
-  { n: "04", title: "Concierge services", text: "Documentation, transport, registration, insurance, detailing and full logistical support.", img: "/images/services/brabus-rear.webp", href: "/contact" },
+const media = [
+  { img: "/images/experience/details/grille.webp", href: "/sell" },
+  { img: "/images/experience/interior/steering-wheel.webp", href: "/contact?interest=sourcing" },
+  { img: "/images/experience/details/wheel-caliper.webp", href: "/contact" },
+  { img: "/images/services/brabus-rear.webp", href: "/contact" },
 ];
 
 export default function ServicesGrid() {
+  const items = useDict().services.items;
+  const services = media.map((m, i) => ({ ...m, n: String(i + 1).padStart(2, "0"), title: items[i][0], text: items[i][1] }));
   return (
     <ul className="services-grid" id="services-list">
       {services.map((s) => (

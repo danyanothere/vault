@@ -1,17 +1,21 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/i18n/client";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Phone, X } from "lucide-react";
 import Logo from "./Logo";
 import Arrow from "./Arrow";
 import { navItems, PHONE, PHONE_HREF } from "./nav";
-import { LangSwitch, useLang } from "./Language";
+import { LangSwitch } from "./Language";
+import { useDict } from "@/i18n/client";
+import { stripLocale } from "@/i18n/config";
 
 export default function Header() {
   const pathname = usePathname();
-  const { t } = useLang();
+  const dict = useDict();
+  const t = (k: keyof typeof dict.nav) => dict.nav[k];
+  const ui = dict.common;
   const [open, setOpen] = useState(false);
   const [openedAt, setOpenedAt] = useState(pathname);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -37,7 +41,8 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const path = stripLocale(pathname);
+  const isActive = (href: string) => path === href || path.startsWith(href + "/");
   const close = () => {
     setOpen(false);
     toggleRef.current?.focus();
@@ -47,7 +52,7 @@ export default function Header() {
     <>
       <header className="site-header">
         <Logo />
-        <nav className="main-nav" aria-label="Primary">
+        <nav className="main-nav" aria-label={dict.nav.primary}>
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className={isActive(item.href) ? "active" : undefined} aria-current={isActive(item.href) ? "page" : undefined}>
               {t(item.key)}
@@ -55,17 +60,17 @@ export default function Header() {
           ))}
         </nav>
         <div className="header-actions">
-          <a href={PHONE_HREF} className="phone-ring" aria-label={t("call")}>
+          <a href={PHONE_HREF} className="phone-ring" aria-label={ui.call}>
             <Phone size={17} strokeWidth={2} />
           </a>
           <span className="v-sep" aria-hidden="true" />
           <Link href="/contact" className="btn btn-outline btn-sm header-cta" data-magnetic>
-            <span>{t("requestAccess")}</span>
+            <span>{ui.requestAccess}</span>
             <Arrow />
           </Link>
           <LangSwitch className="header-lang" />
           <span className="v-sep header-lang" aria-hidden="true" />
-          <button ref={toggleRef} type="button" className="menu-toggle" aria-label="Open menu" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(true)}>
+          <button ref={toggleRef} type="button" className="menu-toggle" aria-label={dict.nav.openMenu} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(true)}>
             <span />
             <span />
             <span />
@@ -73,10 +78,10 @@ export default function Header() {
         </div>
       </header>
 
-      <div id="mobile-menu" ref={panelRef} className={`mobile-menu ${open ? "open" : ""}`} role="dialog" aria-modal="true" aria-label="Menu" inert={!open}>
+      <div id="mobile-menu" ref={panelRef} className={`mobile-menu ${open ? "open" : ""}`} role="dialog" aria-modal="true" aria-label={dict.nav.menu} inert={!open}>
         <div className="mobile-menu-top">
           <Logo onClick={() => setOpen(false)} />
-          <button type="button" className="icon-circle" aria-label="Close menu" onClick={close}>
+          <button type="button" className="icon-circle" aria-label={dict.nav.closeMenu} onClick={close}>
             <X size={16} strokeWidth={1.3} />
           </button>
         </div>
@@ -90,7 +95,7 @@ export default function Header() {
         </nav>
         <div className="mobile-menu-foot">
           <Link href="/contact" className="btn btn-primary">
-            <span>{t("requestAccess")}</span>
+            <span>{ui.requestAccess}</span>
             <Arrow />
           </Link>
           <a href={PHONE_HREF} className="mobile-phone">

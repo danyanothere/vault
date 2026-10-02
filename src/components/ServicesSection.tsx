@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Arrow from "./Arrow";
 import ServicesGrid from "./ServicesGrid";
+import { useDict } from "@/i18n/client";
 
 export default function ServicesSection() {
   const wrap = useRef<HTMLDivElement>(null);
+  const t = useDict().services;
   const [edge, setEdge] = useState({ start: true, end: false });
 
   const list = () => wrap.current?.querySelector<HTMLElement>("#services-list") ?? null;
@@ -35,22 +37,21 @@ export default function ServicesSection() {
       <div className="container">
         <div className="services-head">
           <div>
-            <p className="eyebrow eyebrow-after">What we do</p>
+            <p className="eyebrow eyebrow-after">{t.eyebrow}</p>
             <h2 id="services-title" className="title-lg">
-              Comprehensive
+              {t.title[0]}
               <br />
-              automotive services
+              {t.title[1]}
             </h2>
           </div>
           <p className="body-muted services-intro">
-            From private sales to vehicle sourcing, inspections and logistics, VAULT provides a complete, end-to-end
-            service for clients who value quality, time and confidentiality.
+            {t.intro}
           </p>
           <div className="services-arrows">
-            <button type="button" className="icon-circle arrow-back" aria-label="Previous service" disabled={edge.start} onClick={() => move(-1)}>
+            <button type="button" className="icon-circle arrow-back" aria-label={t.prev} disabled={edge.start} onClick={() => move(-1)}>
               <Arrow size={12} />
             </button>
-            <button type="button" className="icon-circle" aria-label="Next service" disabled={edge.end} onClick={() => move(1)}>
+            <button type="button" className="icon-circle" aria-label={t.next} disabled={edge.end} onClick={() => move(1)}>
               <Arrow size={12} />
             </button>
           </div>

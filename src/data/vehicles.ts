@@ -153,3 +153,35 @@ export const vehicles: Vehicle[] = [
 export const getVehicle = (id: string) => vehicles.find((v) => v.id === id);
 export const vehicleName = (v: Vehicle) => `${v.brand} ${v.modelLines.join(" ")}`;
 export const galleryOrder: GalleryCategory[] = ["exterior", "interior", "details", "wheels", "engine", "rear"];
+
+/** Merge the locale's copy into a vehicle (structure, images and figures stay shared). */
+export function localizeVehicle(v: Vehicle, dict: import("@/i18n/config").Dict): Vehicle {
+  const c = dict.vehicles[v.id];
+  if (!c) return v;
+  const name = vehicleName(v);
+  const unit = (u?: string) => (u ? dict.units[u] ?? u : u);
+  return {
+    ...v,
+    subtitle: c.subtitle,
+    tagline: [c.tagline[0], c.tagline[1] ?? ""],
+    description: c.description,
+    detailIntro: c.description.join(" "),
+    tags: c.tags,
+    quickSpecs: c.quickSpecs,
+    specs: v.specs.map((s, i) => ({ ...s, value: c.specs[i]?.[0] ?? s.value, label: c.specs[i]?.[1] ?? s.label })),
+    story: {
+      specs: v.story.specs.map((s, i) => ({ ...s, unit: unit(s.unit), label: c.story.labels[i] ?? s.label })),
+      final: c.story.final,
+    },
+    hero: { ...v.hero, alt: c.alt },
+    showcase: { ...v.showcase, alt: c.alt },
+    gallery: Object.fromEntries(
+      Object.entries(v.gallery).map(([cat, imgs]) => [
+        cat,
+        imgs?.map((img) => ({ ...img, alt: `${name} — ${dict.detail.categories[cat as GalleryCategory]}` })),
+      ]),
+    ),
+  };
+}
+
+export const localizeVehicles = (dict: import("@/i18n/config").Dict) => vehicles.map((v) => localizeVehicle(v, dict));

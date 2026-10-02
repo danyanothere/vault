@@ -1,27 +1,22 @@
-const stats = [
-  { v: "50+", l: "Exceptional vehicles sold" },
-  { v: "1000%", l: "Discreet transactions" },
-  { v: "10+", l: "Years of experience" },
-  { v: "Global", l: "Network of partners" },
-  { v: "High", l: "Client satisfaction & referrals" },
-];
+import { getDict } from "@/i18n/server";
 
-export default function StatsStrip() {
+export default async function StatsStrip() {
+  const stats = (await getDict()).stats;
   return (
     <ul className="stats">
-      {stats.map((s) => (
-        <li key={s.l}>
+      {stats.map(([v, l]) => (
+        <li key={l}>
           <span className="stat-value">
-            {s.v.endsWith("%") ? (
+            {v.endsWith("%") ? (
               <>
-                {s.v.slice(0, -1)}
+                {v.slice(0, -1)}
                 <small>%</small>
               </>
             ) : (
-              s.v
+              v
             )}
           </span>
-          <span className="stat-label">{s.l}</span>
+          <span className="stat-label">{l}</span>
         </li>
       ))}
     </ul>

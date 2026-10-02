@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createTimeline, cubicBezier, stagger } from "animejs";
 import { vehicles } from "@/data/vehicles";
+import { useDict } from "@/i18n/client";
 import { INTRO_DONE_EVENT } from "@/lib/motion";
 
 const KEY = "vault-intro-seen";
-const STEPS = ["Loading", "Initialization", "Loading collection", "Welcome"];
 const hero = vehicles[0];
 
 /**
@@ -19,6 +19,7 @@ const hero = vehicles[0];
  */
 export default function IntroLoader() {
   const [step, setStep] = useState(0);
+  const dict = useDict();
   const [done, setDone] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const top = useRef<HTMLDivElement>(null);
@@ -106,7 +107,7 @@ export default function IntroLoader() {
 
       <div ref={meta} className="intro-meta">
         <div className="intro-step" key={step}>
-          <span>{String(step + 1).padStart(2, "0")}</span> {STEPS[step]}
+          <span>{String(step + 1).padStart(2, "0")}</span> {dict.intro.steps[step]}
         </div>
         <div className="intro-center">
           <div ref={logo} className="intro-logo-wrap">
@@ -115,7 +116,7 @@ export default function IntroLoader() {
                 <span key={i}>{c}</span>
               ))}
             </span>
-            <span className="logo-sub">Private Automobiles</span>
+            <span className="logo-sub">{dict.common.privateAutomobiles}</span>
           </div>
           <p ref={label} className="intro-vehicle">
             {hero.brand} {hero.modelLines.join(" ")}

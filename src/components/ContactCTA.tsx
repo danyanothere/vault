@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Phone } from "lucide-react";
 import Button from "./Button";
 import { PHONE_HREF } from "./nav";
+import { getDict } from "@/i18n/server";
 
 type Props = {
   eyebrow?: string;
@@ -12,14 +13,12 @@ type Props = {
   mark?: [string, string];
 };
 
-export default function ContactCTA({
-  eyebrow = "Contact",
-  title = ["Discuss your", "next automobile."],
-  text = "Get in touch for a private viewing, more information or to discuss a tailored offer.",
-  image = "/images/contact/covered-car.webp",
-  imagePosition = "70% 50%",
-  mark = ["Rare cars.", "Private access."],
-}: Props) {
+export default async function ContactCTA({ eyebrow, title, text, image = "/images/contact/covered-car.webp", imagePosition = "70% 50%", mark }: Props) {
+  const dict = await getDict();
+  eyebrow ??= dict.cta.eyebrow;
+  title ??= [dict.cta.title[0], dict.cta.title[1]];
+  text ??= dict.cta.text;
+  mark ??= [dict.common.rareCars[0], dict.common.rareCars[1]];
   return (
     <section className="cta" aria-labelledby="cta-title">
       <div className="cta-media" aria-hidden="true">
@@ -36,10 +35,10 @@ export default function ContactCTA({
           <p className="body-muted">{text}</p>
           <div className="btn-row">
             <Button href="/contact" arrow magnetic>
-              Request access
+              {dict.common.requestAccess}
             </Button>
             <Button href={PHONE_HREF} variant="outline" icon={<Phone size={14} strokeWidth={1.5} />} className="btn-call">
-              Call us
+              {dict.common.callUs}
             </Button>
           </div>
         </div>

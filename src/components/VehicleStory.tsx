@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/client";
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import type { Vehicle } from "@/data/vehicles";
-import { vehicles } from "@/data/vehicles";
+import { localizeVehicle, vehicles } from "@/data/vehicles";
+import { useDict } from "@/i18n/client";
 import { easeLuxury, useReducedMotionSafe } from "@/lib/motion";
 import Button from "./Button";
 import WatchVideo from "./WatchVideo";
@@ -34,7 +35,9 @@ const FILM_FROM = 0.12;
  * once the specs start, the film (which begins on that same frame) fades in and plays.
  * Scroll drives type, scale and masks only — never video.currentTime.
  */
-export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
+export default function VehicleStory({ vehicle: raw }: { vehicle: Vehicle }) {
+  const dict = useDict();
+  const vehicle = localizeVehicle(raw, dict);
   const reduce = useReducedMotionSafe();
   const ref = useRef<HTMLElement>(null);
   const [film, setFilm] = useState(false);
@@ -85,7 +88,7 @@ export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
           </motion.div>
         </motion.div>
         <motion.div className="story-shade" style={{ opacity: shade }} aria-hidden="true" />
-        <Link href={`/collection/${vehicle.id}`} className="story-link" data-cursor="explore" aria-label={`View ${name}`} />
+        <Link href={`/collection/${vehicle.id}`} className="story-link" data-cursor="explore" aria-label={`${dict.common.view} ${name}`} />
 
         <div className="story-hud" aria-hidden="true">
           <span>
@@ -135,9 +138,9 @@ export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
           </p>
           <div className="story-actions">
             <Button href="/contact" arrow magnetic>
-              Request a private viewing
+              {dict.common.requestViewing}
             </Button>
-            <WatchVideo title={name} poster={vehicle.video.poster} src={vehicle.video.src} />
+            <WatchVideo label={dict.common.watchVideo} title={name} poster={vehicle.video.poster} src={vehicle.video.src} />
           </div>
         </motion.div>
 
@@ -157,10 +160,11 @@ export default function VehicleStory({ vehicle }: { vehicle: Vehicle }) {
  * No film and no sticky scrolling (shown/hidden with CSS so markup stays SSR-stable).
  */
 function MobileStory({ vehicle, total }: { vehicle: Vehicle; total: string }) {
+  const dict = useDict();
   const name = `${vehicle.brand} ${vehicle.modelLines.join(" ")}`;
   return (
     <section className="story-m" aria-label={name}>
-      <Link href={`/collection/${vehicle.id}`} className="story-m-media" aria-label={`View ${name}`}>
+      <Link href={`/collection/${vehicle.id}`} className="story-m-media" aria-label={`${dict.common.view} ${name}`}>
         <Image quality={85} src={vehicle.showcase.src} alt={vehicle.showcase.alt} fill sizes="100vw" style={{ objectPosition: vehicle.showcase.position }} />
         <span className="story-m-count">
           {vehicle.index} / {total}
@@ -185,10 +189,10 @@ function MobileStory({ vehicle, total }: { vehicle: Vehicle; total: string }) {
         </ul>
         <div className="story-m-actions">
           <Button href="/contact" arrow>
-            Request a private viewing
+            {dict.common.requestViewing}
           </Button>
           <Link href={`/collection/${vehicle.id}`} className="btn btn-ghost">
-            <span>View details</span>
+            <span>{dict.common.viewDetails}</span>
           </Link>
         </div>
       </div>
