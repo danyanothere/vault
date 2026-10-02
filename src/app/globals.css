@@ -34,6 +34,12 @@
 *::after { box-sizing: border-box; }
 
 html { background: var(--bg); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* Desktop browsers reserve a scrollbar track; keep it thin and in the site's palette */
+html { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.22) var(--bg-deep); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.22); border-radius: 8px; border: 2px solid var(--bg-deep); }
+::-webkit-scrollbar-thumb:hover { background: rgba(189, 245, 0, 0.6); }
 
 body {
   margin: 0;
