@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { Gift, MessageSquare, Phone, X, ArrowRight } from "lucide-react";
 import { PHONE, PHONE_HREF } from "./nav";
 
-const GIFT_KEY = "vault-gift-opened";
 const WHATSAPP = "https://wa.me/40700000000";
 
 type Panel = "gift" | "chat" | null;
@@ -14,18 +13,7 @@ export default function Widgets() {
   const [open, setOpen] = useState<Panel>(null);
   const dict = useDict();
   const w = dict.widgets;
-  const [giftSeen, setGiftSeen] = useState(true);
   const root = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let seen = false;
-    try {
-      seen = localStorage.getItem(GIFT_KEY) === "1";
-    } catch {
-      // storage unavailable: show the badge
-    }
-    if (!seen) queueMicrotask(() => setGiftSeen(false));
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -43,14 +31,6 @@ export default function Widgets() {
 
   const toggle = (p: Exclude<Panel, null>) => {
     setOpen((cur) => (cur === p ? null : p));
-    if (p === "gift" && !giftSeen) {
-      setGiftSeen(true);
-      try {
-        localStorage.setItem(GIFT_KEY, "1");
-      } catch {
-        // storage unavailable
-      }
-    }
   };
 
   return (
@@ -105,12 +85,12 @@ export default function Widgets() {
       <button
         type="button"
         className={`widget widget-gift ${open === "gift" ? "is-open" : ""}`}
-        aria-label={giftSeen ? w.offer : w.offerNew}
+        aria-label={w.offerNew}
         aria-expanded={open === "gift"}
         onClick={() => toggle("gift")}
       >
         <Gift size={22} strokeWidth={1.6} />
-        {!giftSeen && <span className="widget-badge">1</span>}
+        <span className="widget-badge">1</span>
       </button>
 
       <button
