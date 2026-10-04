@@ -3,14 +3,19 @@
 import { useState } from "react";
 import { Check, ImagePlus, X } from "lucide-react";
 import Button from "@/components/Button";
-import { useDict } from "@/i18n/client";
+import { useDict, useLang } from "@/i18n/client";
+import { submitEnquiry } from "@/lib/submit";
 import { fill } from "@/i18n/config";
 
 const MAX_PHOTOS = 8;
 
 export default function SellForm() {
   const [sent, setSent] = useState(false);
-  const t = useDict().sell;
+  const dict = useDict();
+  const t = dict.sell;
+  const lang = useLang();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
   const [note, setNote] = useState("");
 
@@ -47,9 +52,14 @@ export default function SellForm() {
   return (
     <form
       className="form-panel form-compact"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        setSent(true);
+        setBusy(true);
+        setError(false);
+        const ok = await submitEnquiry(e.currentTarget, { kind: "sell", lang }, photos);
+        setBusy(false);
+        if (ok) setSent(true);
+        else setError(true);
       }}
     >
       <div className="form-grid">
@@ -113,9 +123,15 @@ export default function SellForm() {
           <input id="phone" name="phone" type="tel" autoComplete="tel" required placeholder={t.fields.phone} />
         </div>
       </div>
+      {error && (
+        <p className="form-error" role="alert">
+          {dict.common.sendError}
+        </p>
+      )}
       <div className="form-foot">
-        <Button type="submit" arrow>
-          {t.submit}
+        <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp-field" />
+        <Button type="submit" arrow={!busy}>
+          {busy ? dict.common.sending : t.submit}
         </Button>
         <p className="microcopy">{fill(t.counter, { count: photos.length, n: MAX_PHOTOS })}</p>
       </div>

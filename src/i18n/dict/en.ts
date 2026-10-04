@@ -15,6 +15,8 @@ export const en = {
     terms: ["Terms of Service", "Terms that apply to the use of the VAULT website and its private services."],
   },
   common: {
+    sending: "Sending…",
+    sendError: "Something went wrong. Please try again or call us.",
     skip: "Skip to content",
     privateAutomobiles: "Private Automobiles",
     requestAccess: "Request access",

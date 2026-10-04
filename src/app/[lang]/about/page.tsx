@@ -4,7 +4,6 @@ import { getDict } from "@/i18n/server";
 import Image from "next/image";
 import { Gem, ShieldCheck, Handshake, Globe2, Star, UserRound, Lock, Clock, Globe } from "lucide-react";
 import Button from "@/components/Button";
-import WatchVideo from "@/components/WatchVideo";
 import BenefitStrip from "@/components/BenefitStrip";
 import ServicesSection from "@/components/ServicesSection";
 import StatsStrip from "@/components/StatsStrip";
@@ -45,7 +44,6 @@ export default async function AboutPage() {
             <Button href="#story" arrow>
               {a.philosophy}
             </Button>
-            <WatchVideo label={a.watchStory} title={dict.video.story} poster="/videos/story-poster.webp" src="/videos/story.mp4" />
           </div>
         </div>
         <p className="about-hero-mark" aria-hidden="true">

@@ -16,6 +16,8 @@ export const ro: Dict = {
     terms: ["Termeni și condiții", "Termenii care se aplică utilizării site-ului VAULT și serviciilor sale private."],
   },
   common: {
+    sending: "Se trimite…",
+    sendError: "Ceva nu a funcționat. Vă rugăm să încercați din nou sau să ne sunați.",
     skip: "Salt la conținut",
     privateAutomobiles: "Automobile Private",
     requestAccess: "Solicitați acces",

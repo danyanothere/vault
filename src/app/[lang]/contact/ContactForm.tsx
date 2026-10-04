@@ -3,13 +3,18 @@
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import Button from "@/components/Button";
-import { useDict } from "@/i18n/client";
+import { useDict, useLang } from "@/i18n/client";
+import { submitEnquiry } from "@/lib/submit";
 
 const interestIds = ["specific", "collection", "auction", "sourcing", "other"];
 
 export default function ContactForm() {
   const [sent, setSent] = useState(false);
-  const t = useDict().contact;
+  const dict = useDict();
+  const t = dict.contact;
+  const lang = useLang();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(false);
   const interests = interestIds.map((id, i) => ({ id, label: t.interests[i] }));
   const [interest, setInterest] = useState("specific");
 
@@ -46,9 +51,14 @@ export default function ContactForm() {
       ) : (
         <form
           className="form-panel request-panel"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            setSent(true);
+            setBusy(true);
+            setError(false);
+            const ok = await submitEnquiry(e.currentTarget, { kind: "access", lang });
+            setBusy(false);
+            if (ok) setSent(true);
+            else setError(true);
           }}
         >
           <fieldset className="field radio-field">
@@ -84,9 +94,15 @@ export default function ContactForm() {
                 ))}
               </select>
             </div>
-            <Button type="submit" arrow className="btn-block">
-              {t.submit}
+            <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp-field" />
+            <Button type="submit" arrow={!busy} className="btn-block">
+              {busy ? dict.common.sending : t.submit}
             </Button>
+            {error && (
+              <p className="form-error" role="alert">
+                {dict.common.sendError}
+              </p>
+            )}
             <p className="microcopy">
               {t.micro[0]}
               <br />
