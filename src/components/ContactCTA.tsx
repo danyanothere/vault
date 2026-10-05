@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Phone } from "lucide-react";
 import Button from "./Button";
-import { PHONE_HREF } from "./nav";
+import { phoneHref } from "@/config/site";
 import { getDict } from "@/i18n/server";
 
 type Props = {
@@ -37,9 +37,11 @@ export default async function ContactCTA({ eyebrow, title, text, image = "/image
             <Button href="/contact" arrow magnetic>
               {dict.common.requestAccess}
             </Button>
-            <Button href={PHONE_HREF} variant="outline" icon={<Phone size={14} strokeWidth={1.5} />} className="btn-call">
-              {dict.common.callUs}
-            </Button>
+            {phoneHref && (
+              <Button href={phoneHref} variant="outline" icon={<Phone size={14} strokeWidth={1.5} />} className="btn-call">
+                {dict.common.callUs}
+              </Button>
+            )}
           </div>
         </div>
         <p className="cta-mark" aria-hidden="true">

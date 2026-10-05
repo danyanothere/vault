@@ -5,6 +5,7 @@
 
 const MAX_PHOTOS = 8;
 const MAX_FIELD = 500;
+const MAX_PHOTO_BYTES = 5 * 1048576; // photos arrive compressed by the browser
 
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!);
 const clean = (v: FormDataEntryValue | null) => (typeof v === "string" ? v.trim().slice(0, MAX_FIELD) : "");
@@ -71,7 +72,10 @@ export async function POST(request: Request) {
     msg.set("text", text);
     await tg("sendMessage", msg);
 
-    const photos = form.getAll("photos").filter((f): f is File => f instanceof File && f.size > 0 && f.type.startsWith("image/")).slice(0, MAX_PHOTOS);
+    const photos = form
+      .getAll("photos")
+      .filter((f): f is File => f instanceof File && f.size > 0 && f.size <= MAX_PHOTO_BYTES && ["image/jpeg", "image/png", "image/webp"].includes(f.type))
+      .slice(0, MAX_PHOTOS);
     if (photos.length === 1) {
       const p = new FormData();
       p.set("chat_id", chatId);

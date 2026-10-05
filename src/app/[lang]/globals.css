@@ -1215,3 +1215,5 @@ html:is([lang="ru"], [lang="ro"]) .title-lg { font-size: clamp(28px, 3vw, 48px);
 /* forms: spam trap + delivery error */
 .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-error { margin-top: 12px; font-size: 12.5px; color: #e08a7a; line-height: 1.5; }
+
+.auction-tbd { padding: 14px 18px; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 3px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); }

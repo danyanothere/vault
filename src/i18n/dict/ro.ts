@@ -33,6 +33,7 @@ export const ro: Dict = {
     close: "Închide",
     language: "Limbă",
   },
+  notFound: { title: "Pagina nu a fost găsită.", text: "Pagina căutată nu există sau a fost mutată.", home: "Înapoi la pagina principală" },
   nav: {
     collection: "Colecție",
     experience: "Experiență",
@@ -84,6 +85,7 @@ export const ro: Dict = {
     lot: "Lotul 01",
     bid: "Solicitați participarea",
     units: ["Zile", "Ore", "Min", "Sec"],
+    dateTbd: "Data este comunicată clienților verificați",
     timer: "Timp rămas până la licitație",
     howEyebrow: "Cum funcționează",
     howTitle: ["Patru pași.", "Discreție deplină."],
@@ -194,7 +196,7 @@ export const ro: Dict = {
   },
   stats: [
     ["50+", "Vehicule excepționale vândute"],
-    ["1000%", "Tranzacții discrete"],
+    ["100%", "Tranzacții discrete"],
     ["10+", "Ani de experiență"],
     ["Global", "Rețea de parteneri"],
     ["Înaltă", "Satisfacție și recomandări"],
@@ -209,6 +211,7 @@ export const ro: Dict = {
     conditions: ["De concurs", "Excelentă", "Foarte bună", "Bună"],
     addPhotos: "Adăugați fotografii",
     maxPhotos: "Maximum {n} imagini",
+    badFile: "Sunt acceptate doar imagini JPEG, PNG sau WebP de maximum {mb} MB.",
     tooMany: "Au fost păstrate doar primele {n} imagini.",
     remove: "Eliminați",
     selected: "Fotografii selectate",

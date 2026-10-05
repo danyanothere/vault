@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { Phone, X } from "lucide-react";
 import Logo from "./Logo";
 import Arrow from "./Arrow";
-import { navItems, PHONE, PHONE_HREF } from "./nav";
+import { navItems } from "./nav";
+import { phoneHref, siteConfig } from "@/config/site";
 import { LangSwitch } from "./Language";
 import { useDict } from "@/i18n/client";
 import { stripLocale } from "@/i18n/config";
@@ -60,10 +61,14 @@ export default function Header() {
           ))}
         </nav>
         <div className="header-actions">
-          <a href={PHONE_HREF} className="phone-ring" aria-label={ui.call}>
-            <Phone size={17} strokeWidth={2} />
-          </a>
-          <span className="v-sep" aria-hidden="true" />
+          {phoneHref && (
+            <>
+              <a href={phoneHref} className="phone-ring" aria-label={ui.call}>
+                <Phone size={17} strokeWidth={2} />
+              </a>
+              <span className="v-sep" aria-hidden="true" />
+            </>
+          )}
           <Link href="/contact" className="btn btn-outline btn-sm header-cta" data-magnetic>
             <span>{ui.requestAccess}</span>
             <Arrow />
@@ -98,12 +103,14 @@ export default function Header() {
             <span>{ui.requestAccess}</span>
             <Arrow />
           </Link>
-          <a href={PHONE_HREF} className="mobile-phone">
-            <span className="icon-circle icon-circle-accent">
-              <Phone size={14} strokeWidth={1.5} />
-            </span>
-            {PHONE}
-          </a>
+          {phoneHref && (
+            <a href={phoneHref} className="mobile-phone">
+              <span className="icon-circle icon-circle-accent">
+                <Phone size={14} strokeWidth={1.5} />
+              </span>
+              {siteConfig.contact.phone}
+            </a>
+          )}
           <LangSwitch />
         </div>
       </div>

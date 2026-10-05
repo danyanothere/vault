@@ -8,6 +8,8 @@ import { submitEnquiry } from "@/lib/submit";
 import { fill } from "@/i18n/config";
 
 const MAX_PHOTOS = 8;
+const MAX_BYTES = 15 * 1048576;
+const ALLOWED = ["image/jpeg", "image/png", "image/webp"];
 
 export default function SellForm() {
   const [sent, setSent] = useState(false);
@@ -21,8 +23,14 @@ export default function SellForm() {
 
   const addFiles = (list: FileList | null) => {
     if (!list) return;
-    const all = [...photos, ...Array.from(list).filter((f) => f.type.startsWith("image/"))];
-    setNote(all.length > MAX_PHOTOS ? fill(t.tooMany, { n: MAX_PHOTOS }) : "");
+    const incoming = Array.from(list);
+    const valid = incoming.filter((f) => ALLOWED.includes(f.type) && f.size <= MAX_BYTES);
+    const fresh = valid.filter((f) => !photos.some((p) => p.name === f.name && p.size === f.size));
+    const all = [...photos, ...fresh];
+    const notes = [];
+    if (valid.length < incoming.length) notes.push(fill(t.badFile, { mb: MAX_BYTES / 1048576 }));
+    if (all.length > MAX_PHOTOS) notes.push(fill(t.tooMany, { n: MAX_PHOTOS }));
+    setNote(notes.join(" "));
     setPhotos(all.slice(0, MAX_PHOTOS));
   };
 
@@ -98,7 +106,7 @@ export default function SellForm() {
             <ImagePlus size={20} strokeWidth={1.1} aria-hidden="true" />
             <span>{t.addPhotos}</span>
             <small>{fill(t.maxPhotos, { n: MAX_PHOTOS })}</small>
-            <input type="file" accept="image/*" multiple disabled={photos.length >= MAX_PHOTOS} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={photos.length >= MAX_PHOTOS} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
           </label>
           {photos.length > 0 && (
             <ul className="upload-list" aria-label={t.selected}>
@@ -112,7 +120,11 @@ export default function SellForm() {
               ))}
             </ul>
           )}
-          {note && <p className="microcopy">{note}</p>}
+          {note && (
+            <p className="form-error" role="alert">
+              {note}
+            </p>
+          )}
         </div>
         <div className="field field-full">
           <label htmlFor="name">{t.fields.name}</label>

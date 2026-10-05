@@ -3,41 +3,31 @@
 import { useEffect, useState } from "react";
 import { useDict } from "@/i18n/client";
 
-const OFFSET = (((2 * 24 + 14) * 60 + 37) * 60 + 21) * 1000;
-const KEY = "vault-auction-target";
-const initial = [2, 14, 37, 21];
-
 function split(ms: number) {
   const s = Math.max(0, Math.floor(ms / 1000));
   return [Math.floor(s / 86400), Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60];
 }
 
-export default function Countdown() {
-  // Server and first client render share the same static values, so hydration always matches.
-  const [parts, setParts] = useState(initial);
+/** Live countdown to a real auction date (ISO string). Renders "--" until mounted to avoid hydration mismatch. */
+export default function Countdown({ target }: { target: string }) {
   const t = useDict().auction;
   const labels = t.units;
+  const [parts, setParts] = useState<number[] | null>(null);
 
   useEffect(() => {
-    let target = Date.now() + OFFSET;
-    try {
-      const saved = Number(sessionStorage.getItem(KEY));
-      if (saved > Date.now()) target = saved;
-      else sessionStorage.setItem(KEY, String(target));
-    } catch {
-      // storage unavailable: fall back to an in-memory target
-    }
-    const tick = () => setParts(split(target - Date.now()));
+    const end = new Date(target).getTime();
+    const tick = () => setParts(split(end - Date.now()));
+    tick();
     const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
-  }, []);
+  }, [target]);
 
   return (
     <div className="countdown" role="timer" aria-label={t.timer}>
-      {parts.map((p, i) => (
-        <div key={labels[i]} className="countdown-box">
-          <span className="countdown-num">{String(p).padStart(2, "0")}</span>
-          <span className="countdown-label">{labels[i]}</span>
+      {labels.map((label, i) => (
+        <div key={label} className="countdown-box">
+          <span className="countdown-num">{parts ? String(parts[i]).padStart(2, "0") : "--"}</span>
+          <span className="countdown-label">{label}</span>
         </div>
       ))}
     </div>

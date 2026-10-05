@@ -28,7 +28,7 @@ export default function JournalList() {
       <ul id="journal-grid" className="journal-grid">
         {posts.map((post) => (
           <li key={post.slug}>
-            <article className="journal-card" data-cursor="view">
+            <article className="journal-card">
               <div className="journal-img">
                 <Image src={post.image} alt="" fill quality={90} sizes="(max-width: 640px) 100vw, 33vw" style={{ objectPosition: post.position }} />
               </div>

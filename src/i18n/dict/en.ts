@@ -32,6 +32,7 @@ export const en = {
     close: "Close",
     language: "Language",
   },
+  notFound: { title: "Page not found.", text: "The page you are looking for does not exist or has moved.", home: "Back to home" },
   nav: {
     collection: "Collection",
     experience: "Experience",
@@ -83,6 +84,7 @@ export const en = {
     lot: "Lot 01",
     bid: "Request to bid",
     units: ["Days", "Hours", "Min", "Sec"],
+    dateTbd: "Date available to verified clients",
     timer: "Time until auction",
     howEyebrow: "How it works",
     howTitle: ["Four steps.", "Complete discretion."],
@@ -193,7 +195,7 @@ export const en = {
   },
   stats: [
     ["50+", "Exceptional vehicles sold"],
-    ["1000%", "Discreet transactions"],
+    ["100%", "Discreet transactions"],
     ["10+", "Years of experience"],
     ["Global", "Network of partners"],
     ["High", "Client satisfaction & referrals"],
@@ -208,6 +210,7 @@ export const en = {
     conditions: ["Concours", "Excellent", "Very good", "Good"],
     addPhotos: "Add photos",
     maxPhotos: "Maximum {n} images",
+    badFile: "Only JPEG, PNG or WebP images up to {mb} MB are accepted.",
     tooMany: "Only the first {n} images were kept.",
     remove: "Remove",
     selected: "Selected photos",

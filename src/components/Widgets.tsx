@@ -3,9 +3,8 @@
 import Link, { useDict } from "@/i18n/client";
 import { useEffect, useRef, useState } from "react";
 import { Gift, MessageSquare, Phone, X, ArrowRight } from "lucide-react";
-import { PHONE, PHONE_HREF } from "./nav";
+import { phoneHref, siteConfig, whatsappHref } from "@/config/site";
 
-const WHATSAPP = "https://wa.me/40700000000";
 
 type Panel = "gift" | "chat" | null;
 
@@ -63,16 +62,20 @@ export default function Widgets() {
           <h2 className="widget-title">{w.help}</h2>
           <p className="widget-text">{w.reply}</p>
           <ul className="widget-actions">
-            <li>
-              <a href={WHATSAPP} target="_blank" rel="noreferrer">
-                <MessageSquare size={15} strokeWidth={1.4} /> WhatsApp
-              </a>
-            </li>
-            <li>
-              <a href={PHONE_HREF}>
-                <Phone size={15} strokeWidth={1.4} /> {PHONE}
-              </a>
-            </li>
+            {whatsappHref && (
+              <li>
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                  <MessageSquare size={15} strokeWidth={1.4} /> WhatsApp
+                </a>
+              </li>
+            )}
+            {phoneHref && (
+              <li>
+                <a href={phoneHref}>
+                  <Phone size={15} strokeWidth={1.4} /> {siteConfig.contact.phone}
+                </a>
+              </li>
+            )}
             <li>
               <Link href="/contact" onClick={() => setOpen(null)}>
                 <ArrowRight size={15} strokeWidth={1.4} /> {dict.common.requestAccess}

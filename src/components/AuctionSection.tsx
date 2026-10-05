@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "./Button";
 import Countdown from "./Countdown";
 import { getDict } from "@/i18n/server";
+import { siteConfig } from "@/config/site";
 
 export default async function AuctionSection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
   const H = headingLevel;
@@ -35,7 +36,7 @@ export default async function AuctionSection({ headingLevel = "h2" }: { headingL
               <p className="tick-label tick-small">{t.lot}</p>
               <p className="lot-name">Porsche 911 Turbo</p>
             </div>
-            <Countdown />
+            {siteConfig.nextAuction ? <Countdown target={siteConfig.nextAuction} /> : <p className="auction-tbd">{t.dateTbd}</p>}
             <Button href="/contact?interest=auction" arrow>
               {t.bid}
             </Button>

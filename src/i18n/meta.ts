@@ -19,5 +19,11 @@ export async function alternates(path: string): Promise<Metadata["alternates"]> 
 export async function pageMetadata(key: MetaKey, path: string): Promise<Metadata> {
   const dict = await getDict();
   const [title, description] = dict.meta[key];
-  return { title, description, alternates: await alternates(path) };
+  return {
+    title,
+    description,
+    alternates: await alternates(path),
+    openGraph: { title: `${title} — VAULT`, description, images: ["/og.jpg"] },
+    twitter: { title: `${title} — VAULT`, description },
+  };
 }

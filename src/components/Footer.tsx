@@ -6,6 +6,13 @@ import { navItems } from "./nav";
 import { LangSwitch } from "./Language";
 import { useDict } from "@/i18n/client";
 import { InstagramIcon, TelegramIcon, YoutubeIcon } from "./Icons";
+import { siteConfig } from "@/config/site";
+
+const socials = [
+  { key: "instagram", label: "Instagram", href: siteConfig.social.instagram, icon: <InstagramIcon size={17} /> },
+  { key: "youtube", label: "YouTube", href: siteConfig.social.youtube, icon: <YoutubeIcon size={18} /> },
+  { key: "telegram", label: "Telegram", href: siteConfig.social.telegram, icon: <TelegramIcon size={16} /> },
+].filter((s) => s.href);
 
 export default function Footer() {
   const dict = useDict();
@@ -24,17 +31,15 @@ export default function Footer() {
         <div className="footer-side">
           <span className="v-sep" aria-hidden="true" />
           <LangSwitch />
-          <div className="footer-social">
-            <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noreferrer">
-              <InstagramIcon size={17} />
-            </a>
-            <a href="https://youtube.com" aria-label="YouTube" target="_blank" rel="noreferrer">
-              <YoutubeIcon size={18} />
-            </a>
-            <a href="https://telegram.org" aria-label="Telegram" target="_blank" rel="noreferrer">
-              <TelegramIcon size={16} />
-            </a>
-          </div>
+          {socials.length > 0 && (
+            <div className="footer-social">
+              {socials.map((s) => (
+                <a key={s.key} href={s.href!} aria-label={s.label} target="_blank" rel="noopener noreferrer">
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="footer-bottom">

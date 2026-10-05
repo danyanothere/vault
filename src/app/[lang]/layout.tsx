@@ -15,6 +15,7 @@ import { I18nProvider } from "@/i18n/client";
 import { htmlLang, locales } from "@/i18n/config";
 import { getDict, getLang } from "@/i18n/server";
 import { alternates } from "@/i18n/meta";
+import { siteConfig } from "@/config/site";
 
 // Every page is pre-rendered once per language; unknown language segments 404.
 export const dynamicParams = false;
@@ -24,10 +25,21 @@ export function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDict();
+  const lang = await getLang();
   return {
+    metadataBase: new URL(siteConfig.url),
     title: { default: dict.meta.siteTitle, template: dict.meta.titleTemplate },
     description: dict.meta.siteDescription,
     alternates: await alternates("/"),
+    openGraph: {
+      type: "website",
+      siteName: "VAULT",
+      locale: { ro: "ro_RO", en: "en_GB", ru: "ru_RU" }[lang],
+      title: dict.meta.siteTitle,
+      description: dict.meta.siteDescription,
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: dict.meta.siteTitle }],
+    },
+    twitter: { card: "summary_large_image", title: dict.meta.siteTitle, description: dict.meta.siteDescription, images: ["/og.jpg"] },
   };
 }
 
