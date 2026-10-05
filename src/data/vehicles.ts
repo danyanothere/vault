@@ -141,7 +141,6 @@ export const vehicles: Vehicle[] = [
     thumbnail: { src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "65% 62%", alt: "" },
     gallery: {
       exterior: [{ src: "/images/vehicles/porsche/porsche-911-cabriolet.webp", position: "50% 60%", alt: "Porsche 911 Turbo Cabriolet, front three-quarter" }],
-      interior: [{ src: "/images/experience/interior/steering-wheel.webp", position: "50% 50%", alt: "Porsche steering wheel" }],
       rear: [
         { src: "/images/auction/porsche-rear.webp", position: "50% 50%", alt: "Porsche rear light bar" },
         { src: "/images/about/coastal-porsche.webp", position: "50% 70%", alt: "Porsche on a coastal road at dusk" },
