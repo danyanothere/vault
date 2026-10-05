@@ -8,14 +8,15 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000"),
   contact: {
     /** Display format, e.g. "+40 7xx xxx xxx" */
-    phone: null as string | null,
+    phone: "+373 60 548 765" as string | null,
     /** Digits only with country code, e.g. "407xxxxxxxx" */
-    whatsapp: null as string | null,
+    whatsapp: "37360548765" as string | null,
   },
   social: {
-    instagram: null as string | null,
-    youtube: null as string | null,
-    telegram: null as string | null,
+    // placeholders until the brand accounts exist: link to each platform's home page
+    instagram: "https://www.instagram.com/" as string | null,
+    youtube: "https://www.youtube.com/" as string | null,
+    telegram: "https://telegram.org/" as string | null,
   },
   /** ISO date of the next private auction; null shows "date available to verified clients". */
   nextAuction: null as string | null,
