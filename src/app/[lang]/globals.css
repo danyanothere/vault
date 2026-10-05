@@ -12,9 +12,9 @@
   --muted: #707070;
   --line: rgba(255, 255, 255, 0.1);
   --line-soft: rgba(255, 255, 255, 0.08);
-  --accent-rgb: 122, 168, 128; /* racing green */
+  --accent-rgb: 76, 187, 23; /* #4CBB17 */
   --accent: rgb(var(--accent-rgb));
-  --accent-hover: #8cba92;
+  --accent-hover: #5fcc2c;
   --on-accent: #080808;
 
   --font: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -535,7 +535,7 @@ main { display: block; padding-top: var(--header-h); }
 }
 .widget:hover { transform: scale(1.07); }
 .widget-gift {
-  background: radial-gradient(circle at 50% 35%, #1f3324 0%, #0f1d13 100%);
+  background: radial-gradient(circle at 50% 35%, #1d3a12 0%, #0e1e08 100%);
   color: var(--accent);
   border: 2px solid rgba(var(--accent-rgb), 0.75);
   animation: glow 2.4s ease-in-out infinite;
